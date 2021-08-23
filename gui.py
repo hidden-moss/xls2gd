@@ -88,6 +88,7 @@ class MainFrame(wx.Frame):
         self.sizer_btm = wx.BoxSizer(wx.HORIZONTAL)
         self.sizer_btm_l = wx.BoxSizer(wx.VERTICAL)
         self.sizer_btm_r = wx.BoxSizer(wx.VERTICAL)
+        self.sizer_btm_r_h = wx.BoxSizer(wx.HORIZONTAL)
 
         # Convert
         self.btn_convert = wx.Button(self.panel, label="Convert")
@@ -101,25 +102,27 @@ class MainFrame(wx.Frame):
         self.sizer_btm_r.Add(self.cb_config, flag=wx.RIGHT |
                              wx.ALIGN_RIGHT, border=4)
 
-        # version
-        version_str = __version__ + '  '
-        self.st_version = wx.StaticText(
-            self.panel, label=version_str, size=(200, -1), style=wx.ALIGN_RIGHT
-        )
-        self.sizer_btm_r.Add(self.st_version, flag=wx.RIGHT |
+        self.sizer_btm_r.Add(self.sizer_btm_r_h, flag=wx.RIGHT |
                              wx.ALIGN_RIGHT, border=4)
+
+        # version
+        version_str = __version__ + ' '
+        self.st_version = wx.StaticText(
+            self.panel, label=version_str, size=(100, -1), style=wx.ALIGN_RIGHT
+        )
+        self.sizer_btm_r_h.Add(self.st_version, flag=wx.RIGHT, border=4)
         # Copyright
-        copyright_link_str = "  ©2021 Hiden Moss  "
+        copyright_link_str = "©2021 Hiden Moss"
         self.st_copyright_link = hl.HyperLinkCtrl(
-            self.panel, label=copyright_link_str, URL="http://www.hiddenmoss.com/", size=(200, -1), style=wx.ALIGN_RIGHT
+            self.panel, label=copyright_link_str, URL="http://www.hiddenmoss.com/", size=(100, -1), style=wx.ALIGN_RIGHT
         )
 
         self.st_copyright_link.EnableRollover(True)
-        self.st_copyright_link.SetToolTip(wx.ToolTip("Hello World!"))
+        self.st_copyright_link.SetToolTip(
+            wx.ToolTip("©2021 Copyright Hidden Moss Inc."))
         self.st_copyright_link.UpdateLink()
 
-        self.sizer_btm_r.Add(self.st_copyright_link, flag=wx.RIGHT |
-                             wx.ALIGN_RIGHT, border=4)
+        self.sizer_btm_r_h.Add(self.st_copyright_link, flag=wx.RIGHT, border=4)
 
         self.sizer_v.Add((-1, 4))
         self.sizer_v.Add(self.sizer_btm, proportion=0,
