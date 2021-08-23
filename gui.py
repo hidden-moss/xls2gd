@@ -7,6 +7,7 @@
 
 import wx
 import wx.richtext as rt
+import wx.lib.agw.hyperlink as hl
 import tool_xls2gd as x2l
 import sys
 import os
@@ -101,11 +102,23 @@ class MainFrame(wx.Frame):
                              wx.ALIGN_RIGHT, border=4)
 
         # version
-        version_str = __version__ + "  ©2021 Hiden Moss  "
+        version_str = __version__ + '  '
         self.st_version = wx.StaticText(
             self.panel, label=version_str, size=(200, -1), style=wx.ALIGN_RIGHT
         )
         self.sizer_btm_r.Add(self.st_version, flag=wx.RIGHT |
+                             wx.ALIGN_RIGHT, border=4)
+        # Copyright
+        copyright_link_str = "  ©2021 Hiden Moss  "
+        self.st_copyright_link = hl.HyperLinkCtrl(
+            self.panel, label=copyright_link_str, URL="http://www.hiddenmoss.com/", size=(200, -1), style=wx.ALIGN_RIGHT
+        )
+
+        self.st_copyright_link.EnableRollover(True)
+        self.st_copyright_link.SetToolTip(wx.ToolTip("Hello World!"))
+        self.st_copyright_link.UpdateLink()
+
+        self.sizer_btm_r.Add(self.st_copyright_link, flag=wx.RIGHT |
                              wx.ALIGN_RIGHT, border=4)
 
         self.sizer_v.Add((-1, 4))
