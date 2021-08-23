@@ -71,6 +71,17 @@ class MainFrame(wx.Frame):
         self.tc3 = wx.TextCtrl(self.panel)
         self.sizer_cfg_3.Add(self.tc3, proportion=1)
 
+        # add Config to parent panel
+        self.sizer_v.Add(
+            self.sizer_cfg_1, flag=wx.EXPAND | wx.LEFT | wx.RIGHT | wx.TOP, border=4
+        )
+        self.sizer_v.Add(
+            self.sizer_cfg_2, flag=wx.EXPAND | wx.LEFT | wx.RIGHT | wx.TOP, border=4
+        )
+        self.sizer_v.Add(
+            self.sizer_cfg_3, flag=wx.EXPAND | wx.LEFT | wx.RIGHT | wx.TOP, border=4
+        )
+
         # Bottom sizer
         self.sizer_btm = wx.BoxSizer(wx.HORIZONTAL)
         self.sizer_btm_l = wx.BoxSizer(wx.VERTICAL)
