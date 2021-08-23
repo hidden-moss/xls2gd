@@ -101,9 +101,9 @@ class MainFrame(wx.Frame):
                              wx.ALIGN_RIGHT, border=4)
 
         # version
-        version_str = __version__ + "  "
+        version_str = __version__ + "  ©2021 Hiden Moss  "
         self.st_version = wx.StaticText(
-            self.panel, label=version_str, size=(100, -1), style=wx.ALIGN_RIGHT
+            self.panel, label=version_str, size=(200, -1), style=wx.ALIGN_RIGHT
         )
         self.sizer_btm_r.Add(self.st_version, flag=wx.RIGHT |
                              wx.ALIGN_RIGHT, border=4)
