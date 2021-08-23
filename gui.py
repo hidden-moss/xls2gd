@@ -30,6 +30,7 @@ class MainFrame(wx.Frame):
 
     def __init__(self, parent, title):
         wx.Frame.__init__(self, parent, -1, title, size=wx.Size(720, 320))
+        # icon by bart, from https://opengameart.org/content/pixel-art-flame-icon
         self.SetIcon(wx.Icon(self.resource_path("img\\icon.ico")))
         self.panel = wx.Panel(self)
 
