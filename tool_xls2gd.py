@@ -1,9 +1,9 @@
 #! /usr/bin/env python
 # -*- coding: utf-8 -*
 # @description: A tool to convert excel files to GDScprit
-# @copyright Hidden Moss
-# @see Hidden Moss: https://hiddenmoss.com/
-# @see git repo: https://github.com/hidden-moss/xls2gd
+# @copyright Hidden Moss, https://hiddenmoss.com/
+# @author Yuancheng Zhang, https://github.com/endaye
+# @see repo: https://github.com/hidden-moss/xls2gd
 
 import os
 import os.path
@@ -107,20 +107,20 @@ def make_table(filename):
             if type_type != xlrd.XL_CELL_TEXT:
                 return {}, -1, 'sheet[{}] type columns[{}] must be String'.format(sheet_name, col_idx + 1)
             if (type_name != INT
-                        and type_name != FLOAT
-                        and type_name != STRING
-                        and type_name != BOOL
-                        and type_name != INT_ARR
-                        and type_name != FLOAT_ARR
-                        and type_name != STRING_ARR
-                        and type_name != BOOL_ARR
-                        and type_name != VECTOR2
-                        and type_name != VECTOR3
-                        and type_name != EULER
-                        and type_name != COLOR
-                        and type_name != COMMENT
-                        and type_name != PYTHON
-                    ):
+                and type_name != FLOAT
+                and type_name != STRING
+                and type_name != BOOL
+                and type_name != INT_ARR
+                and type_name != FLOAT_ARR
+                and type_name != STRING_ARR
+                and type_name != BOOL_ARR
+                and type_name != VECTOR2
+                and type_name != VECTOR3
+                and type_name != EULER
+                and type_name != COLOR
+                and type_name != COMMENT
+                and type_name != PYTHON
+                ):
                 return {}, -1, 'sheet[{}] type column[{}] type wrong'.format(sheet_name, col_idx + 1)
             type_dict[title] = type_name
 
@@ -673,8 +673,23 @@ def run():
         # input()
 
 
+def set_gui(frame):
+    global gui
+    if frame is not None:
+        gui = frame
+        global INFO, ERROR, SUCCESS, FAILED
+        INFO = "info"
+        ERROR = "error"
+        SUCCESS = "sucess"
+        FAILED = "failed"
+    else:
+        log(ERROR, "frame is None.")
+
+
 def log(prefix, s):
-    if is_color:
+    if gui is not None:
+        gui.write(prefix, s)
+    elif is_color:
         print('[{}] {}'.format(prefix['c'], s))
     else:
         print('[{}] {}'.format(prefix['b'], s))
