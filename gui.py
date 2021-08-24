@@ -96,21 +96,17 @@ class MainFrame(wx.Frame):
         self.sizer_btm_l.Add((-1, 4))
         self.sizer_btm_l.Add(self.btn_convert, flag=wx.LEFT, border=4)
 
-        # Config
-        self.cb_config = wx.CheckBox(self.panel, label="Config")
-        self.Bind(wx.EVT_CHECKBOX, self.on_config_checked, self.cb_config)
-        self.sizer_btm_r.Add(self.cb_config, flag=wx.RIGHT |
-                             wx.ALIGN_RIGHT, border=4)
-
-        self.sizer_btm_r.Add(self.sizer_btm_r_h, flag=wx.RIGHT |
-                             wx.ALIGN_RIGHT, border=4)
-
         # Version
         version_str = __version__ + ' '
         self.st_version = wx.StaticText(
             self.panel, label=version_str, size=(100, -1), style=wx.ALIGN_RIGHT
         )
         self.sizer_btm_r_h.Add(self.st_version, flag=wx.RIGHT, border=4)
+
+        # Config
+        self.cb_config = wx.CheckBox(self.panel, label="Config")
+        self.Bind(wx.EVT_CHECKBOX, self.on_config_checked, self.cb_config)
+        self.sizer_btm_r_h.Add(self.cb_config, flag=wx.RIGHT, border=4)
 
         # Copyright
         copyright_link_str = "©2021 Hiden Moss"
@@ -124,7 +120,12 @@ class MainFrame(wx.Frame):
         self.st_copyright_link.UpdateLink()
 
         # Bottom
-        self.sizer_btm_r_h.Add(self.st_copyright_link, flag=wx.RIGHT, border=4)
+        self.sizer_btm_r.Add(
+            self.sizer_btm_r_h, flag=wx.RIGHT | wx.ALIGN_RIGHT, border=4
+        )
+        self.sizer_btm_r.Add(
+            self.st_copyright_link, flag=wx.RIGHT | wx.ALIGN_RIGHT, border=4
+        )
 
         self.sizer_v.Add((-1, 4))
         self.sizer_v.Add(self.sizer_btm, proportion=0,
