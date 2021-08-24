@@ -67,7 +67,7 @@ class MainFrame(wx.Frame):
         # Config - output name template
         self.sizer_cfg_3 = wx.BoxSizer(wx.HORIZONTAL)
         self.st3 = wx.StaticText(
-            self.panel, label=" Output Name Template:", size=(120, -1)
+            self.panel, label=" Name Template:", size=(120, -1)
         )
         self.sizer_cfg_3.Add(self.st3, flag=wx.RIGHT, border=4)
         self.tc3 = wx.TextCtrl(self.panel)
