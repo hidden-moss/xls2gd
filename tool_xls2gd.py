@@ -7,22 +7,19 @@
 
 import os
 import os.path
-import time
 import sys
 import datetime
 import codecs
 import xlrd
-import xlwt
-from xlutils.copy import copy
 import subprocess
 import json
 import re
 
 __authors__ = ['Yuancheng Zhang']
-__copyright__ = 'Copyright 2021, Hidden Moss'
+__copyright__ = 'Copyright 2024, Hidden Moss'
 __credits__ = ['Yuancheng Zhang']
 __license__ = 'MIT'
-__version__ = 'v1.0.0'
+__version__ = 'v1.0.3'
 __maintainer__ = 'Yuancheng Zhang'
 __status__ = 'Development'
 
@@ -65,7 +62,7 @@ is_color = False
 
 def make_table(filename):
     if not os.path.isfile(filename):
-        raise NameError('%s is	not	a valid	filename' % filename)
+        raise NameError('%s is not a valid filename' % filename)
     book_xlrd = xlrd.open_workbook(filename)
 
     excel = {}
@@ -107,20 +104,20 @@ def make_table(filename):
             if type_type != xlrd.XL_CELL_TEXT:
                 return {}, -1, 'sheet[{}] type columns[{}] must be String'.format(sheet_name, col_idx + 1)
             if (type_name != INT
-                and type_name != FLOAT
-                and type_name != STRING
-                and type_name != BOOL
-                and type_name != INT_ARR
-                and type_name != FLOAT_ARR
-                and type_name != STRING_ARR
-                and type_name != BOOL_ARR
-                and type_name != VECTOR2
-                and type_name != VECTOR3
-                and type_name != EULER
-                and type_name != COLOR
-                and type_name != COMMENT
-                and type_name != PYTHON
-                ):
+                    and type_name != FLOAT
+                    and type_name != STRING
+                    and type_name != BOOL
+                    and type_name != INT_ARR
+                    and type_name != FLOAT_ARR
+                    and type_name != STRING_ARR
+                    and type_name != BOOL_ARR
+                    and type_name != VECTOR2
+                    and type_name != VECTOR3
+                    and type_name != EULER
+                    and type_name != COLOR
+                    and type_name != COMMENT
+                    and type_name != PYTHON
+                    ):
                 return {}, -1, 'sheet[{}] type column[{}] type wrong'.format(sheet_name, col_idx + 1)
             type_dict[title] = type_name
 
@@ -433,7 +430,7 @@ def write_to_gd_script(excel, output_path, xls_file):
         suffix = ''
         outfp = codecs.open(output_path + '/' + file_name, 'w', "utf-8")
         outfp.write(SCRIPT_HEAD % (excel['filename'].replace('.//', '')))
-        outfp.write('const ' + sheet_name + suffix + ' = {\r\n')
+        outfp.write('var ' + sheet_name + suffix + ' = {\r\n')
 
         if key1 and key2 and key3:
             write_to_gd_key(sheet, [key1, key2, key3], type_dict, outfp, 1)
