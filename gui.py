@@ -13,10 +13,10 @@ import sys
 import os
 
 __authors__ = ["Yuancheng Zhang"]
-__copyright__ = "Copyright 2021, Lilith Games, Project DaVinci, Avatar Team"
+__copyright__ = "Copyright 2024, Hidden Moss"
 __credits__ = ["Yuancheng Zhang"]
 __license__ = "MIT"
-__version__ = "v1.0.0"
+__version__ = "v1.1.0"
 __maintainer__ = "Yuancheng Zhang"
 __status__ = "Production"
 
@@ -31,7 +31,6 @@ class MainFrame(wx.Frame):
 
     def __init__(self, parent, title):
         wx.Frame.__init__(self, parent, -1, title, size=wx.Size(720, 320))
-        # icon by bart, from https://opengameart.org/content/pixel-art-flame-icon
         self.SetIcon(wx.Icon(self.resource_path("img\\icon.ico")))
         self.panel = wx.Panel(self)
 
@@ -109,7 +108,7 @@ class MainFrame(wx.Frame):
         self.sizer_btm_r_h.Add(self.cb_config, flag=wx.RIGHT, border=4)
 
         # Copyright
-        copyright_link_str = "©2021 Hiden Moss"
+        copyright_link_str = "©2024 Hiden Moss"
         self.st_copyright_link = hl.HyperLinkCtrl(
             self.panel, label=copyright_link_str, URL="http://www.hiddenmoss.com/", size=(100, -1), style=wx.ALIGN_RIGHT
         )
