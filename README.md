@@ -7,5 +7,5 @@
 A script to convert xls or xlsx to GDScript files.
 
 ### Thanks
-Dev: @endaye
-Icon: @yinghuimeng
+* Dev: [@endaye](http://github.com/endaye)
+* Icon: [@yinghuimeng](http://github.com/yinghuimeng)
