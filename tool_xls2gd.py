@@ -49,7 +49,7 @@ SCRIPT_HEAD = '''# @copyright Hidden Moss
 # data type
 INT, FLOAT, STRING, BOOL = r"int", r"float", r"string", r"bool"
 INT_ARR, FLOAT_ARR, STRING_ARR, BOOL_ARR = r"int[]", r"float[]", r"string[]", r"bool[]"
-VECTOR2, VECTOR3, EULER, COLOR = 'vector2', 'vector3', 'euler', 'color'
+VECTOR2, VECTOR3, COLOR = 'vector2', 'vector3', 'color'
 PYTHON, COMMENT = 'python', 'comment'
 
 CONFIG_FILE = 'tool_xls2gd.config'
@@ -63,7 +63,7 @@ IS_COLOR = False
 
 
 def make_table(filename):
-    """Function printing python version."""
+    """Make tables from excel file."""
     if not os.path.isfile(filename):
         raise NameError('%s is not a valid filename' % filename)
     book_xlrd = xlrd.open_workbook(filename)
@@ -116,11 +116,10 @@ def make_table(filename):
                     and type_name != BOOL_ARR
                     and type_name != VECTOR2
                     and type_name != VECTOR3
-                    and type_name != EULER
                     and type_name != COLOR
                     and type_name != COMMENT
                     and type_name != PYTHON
-                    ):
+                ):
                 return {}, -1, 'sheet[{}] type column[{}] type wrong'.format(sheet_name, col_idx + 1)
             type_dict[title] = type_name
 
@@ -177,8 +176,6 @@ def make_table(filename):
                 elif type_dict[title] == VECTOR2 and vtype == xlrd.XL_CELL_TEXT:
                     v = str(value)
                 elif type_dict[title] == VECTOR3 and vtype == xlrd.XL_CELL_TEXT:
-                    v = str(value)
-                elif type_dict[title] == EULER and vtype == xlrd.XL_CELL_TEXT:
                     v = str(value)
                 elif type_dict[title] == COLOR and vtype == xlrd.XL_CELL_TEXT:
                     v = str(value)
@@ -388,25 +385,6 @@ def get_vector3(v):
     return res_str
 
 
-def get_euler(v):
-    if v is None:
-        return 'null'
-    tmp_vec_str = v.split(',')
-    if len(tmp_vec_str) != 3:
-        # todo: error check
-        return 'null'
-    res_str = 'EulerDegree('
-    i = 0
-    for val in tmp_vec_str:
-        if val != None and val != '':
-            if i != 0:
-                res_str += ', '
-            res_str = res_str + val.lower()
-            i += 1
-    res_str += ')'
-    return res_str
-
-
 def get_color(v):
     """Get Color."""
     if v is None:
@@ -519,8 +497,6 @@ def write_to_gd_row(row, type_dict, outfp, depth):
             outfp.write(template.format(indent, key, get_vector2(value)))
         elif type_dict[key] == VECTOR3:
             outfp.write(template.format(indent, key, get_vector3(value)))
-        elif type_dict[key] == EULER:
-            outfp.write(template.format(indent, key, get_euler(value)))
         elif type_dict[key] == COLOR:
             outfp.write(template.format(indent, key, get_color(value)))
         elif type_dict[key] == PYTHON:
