@@ -413,6 +413,7 @@ def get_gd(v):
 
 
 def write_to_gd_script(excel, output_path, xls_file):
+    """Write to GDScript."""
     for (sheet_name, sheet) in excel['data'].items():
         meta = excel['meta'][sheet_name]
         type_dict = meta['type_dict']
@@ -448,6 +449,7 @@ def write_to_gd_script(excel, output_path, xls_file):
 
 
 def write_to_gd_key(data, keys, type_dict, outfp, depth):
+    """Write to GDScript. Promary key style sheet."""
     cnt = 0
     keyX = keys[depth - 1]
     indent = get_indent(depth)
@@ -472,6 +474,7 @@ def write_to_gd_key(data, keys, type_dict, outfp, depth):
 
 
 def write_to_gd_row(row, type_dict, outfp, depth):
+    """Write to GDScript. Row style sheet."""
     cnt = 0
     indent = get_indent(depth)
     template = '{}"{}": {}'
@@ -514,6 +517,7 @@ def write_to_gd_row(row, type_dict, outfp, depth):
 
 
 def write_to_gd_kv(data, keys, type_dict, outfp, depth):
+    """Write to GDScript. Key-value style sheet."""
     cnt = 0
     keyX = keys[depth - 1]
     indent = get_indent(depth)
@@ -550,6 +554,7 @@ def write_to_gd_kv(data, keys, type_dict, outfp, depth):
 
 
 def get_indent(depth):
+    """Get indent."""
     indent = ''
     for _ in range(depth):
         indent += '\t'
@@ -557,6 +562,7 @@ def get_indent(depth):
 
 
 def check_config():
+    """Check config file."""
     if not os.path.isfile(CONFIG_FILE):
         default_config = {
             'input_folder': INPUT_FOLDER,
@@ -571,6 +577,7 @@ def check_config():
 
 
 def load_config():
+    """Load config file."""
     check_config()
     log(INFO, 'load config from \t{}'.format(CONFIG_FILE))
 
@@ -584,6 +591,7 @@ def load_config():
 
 
 def save_config():
+    """Save config file."""
     if not os.path.isfile(CONFIG_FILE):
         return
 
@@ -600,6 +608,7 @@ def save_config():
 
 
 def main():
+    """Main function."""
     global GD_CNT
     GD_CNT = 0
     input_path = INPUT_FOLDER
@@ -637,6 +646,7 @@ def main():
 
 
 def run():
+    """Function entry."""
     # print command line arguments
     for arg in sys.argv[1:]:
         if arg == '-c':
@@ -663,6 +673,7 @@ def run():
 
 
 def set_gui(frame):
+    """Set GUI."""
     global GUI
     if frame is not None:
         GUI = frame
@@ -676,6 +687,7 @@ def set_gui(frame):
 
 
 def log(prefix, s):
+    """Print logs."""
     if GUI is not None:
         GUI.write(prefix, s)
     elif IS_COLOR:
