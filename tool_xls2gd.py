@@ -526,8 +526,6 @@ def write_to_gd_kv(data, keys, type_dict, outfp, depth):
     suffix_end = '\r\n'
 
     prefix = indent + prefix
-    suffix_comma = suffix_comma
-    suffix_end = suffix_end
 
     for (_, kv) in data.items():
         key, value = None, None
@@ -569,7 +567,7 @@ def check_config():
             'output_folder': OUTPUT_FOLDER,
             'output_name_template': OUTPUT_NAME_TEMPLATE,
         }
-        with open(CONFIG_FILE, 'w') as json_file:
+        with open(CONFIG_FILE, 'w', encoding="utf-8") as json_file:
             json_file.write(json.dumps(default_config, indent=True))
             json_file.close()
             subprocess.check_call(['attrib', '+H', CONFIG_FILE])
@@ -581,7 +579,7 @@ def load_config():
     check_config()
     log(INFO, f'load config from \t{CONFIG_FILE}')
 
-    with open(CONFIG_FILE) as json_file:
+    with open(CONFIG_FILE, encoding="utf-8") as json_file:
         config = json.load(json_file)
         global INPUT_FOLDER, OUTPUT_FOLDER, OUTPUT_NAME_TEMPLATE
         INPUT_FOLDER = config['input_folder']
@@ -600,7 +598,7 @@ def save_config():
         'output_folder': OUTPUT_FOLDER,
         'output_name_template': OUTPUT_NAME_TEMPLATE,
     }
-    with open(CONFIG_FILE, 'r+') as json_file:
+    with open(CONFIG_FILE, 'r+', encoding="utf-8") as json_file:
         json_file.truncate(0)  # need '0' when using r+
         json_file.write(json.dumps(config, indent=True))
         json_file.close()
@@ -658,7 +656,6 @@ def run():
             'time: \t\t{0:%Y-%m-%d %H:%M:%S}'.format(datetime.datetime.now()))
         load_config()
         main()
-        global GD_CNT
         log(INFO, f'total GDScript: \t\t{GD_CNT}')
         log(INFO, 'done.')
         # log(INFO, 'press Enter to exit...')
@@ -674,10 +671,9 @@ def run():
 
 def set_gui(frame):
     """Set GUI."""
-    global GUI
     if frame is not None:
+        global GUI, INFO, ERROR, SUCCESS, FAILED
         GUI = frame
-        global INFO, ERROR, SUCCESS, FAILED
         INFO = "info"
         ERROR = "error"
         SUCCESS = "sucess"
@@ -691,9 +687,9 @@ def log(prefix, s):
     if GUI is not None:
         GUI.write(prefix, s)
     elif IS_COLOR:
-        print('[{}] {}'.format(prefix['c'], s))
+        print(f'[{prefix["c"]}] {s}')
     else:
-        print('[{}] {}'.format(prefix['b'], s))
+        print(f'[{prefix["b"]}] {s}')
 
 
 if __name__ == '__main__':
