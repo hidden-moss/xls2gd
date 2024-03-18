@@ -575,9 +575,9 @@ def write_to_gd_row(row, type_dict, outfp, depth):
 def write_to_gd_kv(data, keys, type_dict, outfp, depth):
     """Write to GDScript. Key-value style sheet."""
     cnt = 0
-    keyX = keys[depth - 1]
+    key_x = keys[depth - 1]
     indent = get_indent(depth)
-    prefix = "[{}]: " if type_dict[keyX] in (INT, FLOAT) else "{}: "
+    prefix = "[{}]: " if type_dict[key_x] in (INT, FLOAT) else "{}: "
     suffix_comma = ",\r\n"
     suffix_end = "\r\n"
 
