@@ -292,7 +292,7 @@ def make_table(filename):
 
 def format_str(v):
     """Format strings."""
-    if type(v) == int or type(v) == float:
+    if isinstance(v, int) or isinstance(v, float):
         v = str(v)
     s = v
     s = v.replace('"', "'")
