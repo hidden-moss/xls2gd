@@ -1,3 +1,5 @@
+"""This is a GUI of xls2gd, which is a tool to convert Excel files to GDScript files."""
+
 #! /usr/bin/env python
 # -*- coding: utf-8 -*
 # description: xls2gd GUI
@@ -5,12 +7,13 @@
 # @author Yuancheng Zhang, https://github.com/endaye
 # @see repo: https://github.com/hidden-moss/xls2gd
 
+import sys
+import os
 import wx
 import wx.richtext as rt
 import wx.lib.agw.hyperlink as hl
 import tool_xls2gd as x2l
-import sys
-import os
+
 
 __authors__ = ["Yuancheng Zhang"]
 __copyright__ = "Copyright 2024, Hidden Moss"

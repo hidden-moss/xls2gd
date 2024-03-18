@@ -1,3 +1,5 @@
+"""This module convert Excel files to GDScript files."""
+
 #! /usr/bin/env python
 # -*- coding: utf-8 -*
 # @description: A tool to convert excel files to GDScprit
@@ -10,10 +12,10 @@ import os.path
 import sys
 import datetime
 import codecs
-import xlrd
 import subprocess
 import json
 import re
+import xlrd
 
 __authors__ = ['Yuancheng Zhang']
 __copyright__ = 'Copyright 2024, Hidden Moss'
@@ -54,13 +56,14 @@ CONFIG_FILE = 'tool_xls2gd.config'
 
 KEY_1, KEY_2, KEY_3 = 'key1', 'key2', 'key3'
 
-gui = None
-gd_cnt = 0
-max_xls_name_len = 0
-is_color = False
+GUI = None
+GD_CNT = 0
+MAX_XLS_NAME_LEN = 0
+IS_COLOR = False
 
 
 def make_table(filename):
+    """Function printing python version."""
     if not os.path.isfile(filename):
         raise NameError('%s is not a valid filename' % filename)
     book_xlrd = xlrd.open_workbook(filename)
@@ -239,6 +242,7 @@ def make_table(filename):
 
 
 def format_str(v):
+    """Function printing python version."""
     if type(v) == int or type(v) == float:
         v = str(v)
     s = v
@@ -249,6 +253,7 @@ def format_str(v):
 
 
 def get_int(v):
+    """Function printing python version."""
     if v is None:
         return 'null'
     return v
@@ -447,10 +452,10 @@ def write_to_gd_script(excel, output_path, xls_file):
 
         outfp.write('}\r\n')
         outfp.close()
-        global gd_cnt
-        gd_cnt += 1
+        global GD_CNT
+        GD_CNT += 1
         log(SUCCESS, '[{{0:02d}}] {{1:{0}}} => {{2}}'
-            .format(max_xls_name_len).format(gd_cnt, xls_file, file_name))
+            .format(MAX_XLS_NAME_LEN).format(GD_CNT, xls_file, file_name))
 
 
 def write_to_gd_key(data, keys, type_dict, outfp, depth):
@@ -608,8 +613,8 @@ def save_config():
 
 
 def main():
-    global gd_cnt
-    gd_cnt = 0
+    global GD_CNT
+    GD_CNT = 0
     input_path = INPUT_FOLDER
     output_path = OUTPUT_FOLDER
     log(INFO, 'input path: \t{}'.format(input_path))
@@ -625,8 +630,8 @@ def main():
         raise RuntimeError('input dir is empty.')
 
     # find max string len
-    global max_xls_name_len
-    max_xls_name_len = len(max(xls_files, key=len))
+    global MAX_XLS_NAME_LEN
+    MAX_XLS_NAME_LEN = len(max(xls_files, key=len))
 
     # filer files by .xls
     xls_files = [x for x in xls_files
@@ -637,8 +642,8 @@ def main():
         xls_file = xls_files[i]
         t, ret, errstr = make_table('%s/%s' % (INPUT_FOLDER, xls_file))
         if ret != 0:
-            gd_cnt += 1
-            log(FAILED, '[{:02d}] {}'.format(gd_cnt, xls_file))
+            GD_CNT += 1
+            log(FAILED, '[{:02d}] {}'.format(GD_CNT, xls_file))
             raise RuntimeError(errstr)
         else:
             write_to_gd_script(t, output_path, xls_file)
@@ -648,16 +653,16 @@ def run():
     # print command line arguments
     for arg in sys.argv[1:]:
         if arg == '-c':
-            global is_color
-            is_color = True
+            global IS_COLOR
+            IS_COLOR = True
 
     try:
         log(INFO,
             'time: \t\t{0:%Y-%m-%d %H:%M:%S}'.format(datetime.datetime.now()))
         load_config()
         main()
-        global gd_cnt
-        log(INFO, 'total GDScript: \t\t{}'.format(gd_cnt))
+        global GD_CNT
+        log(INFO, 'total GDScript: \t\t{}'.format(GD_CNT))
         log(INFO, 'done.')
         # log(INFO, 'press Enter to exit...')
         # input()
@@ -671,9 +676,9 @@ def run():
 
 
 def set_gui(frame):
-    global gui
+    global GUI
     if frame is not None:
-        gui = frame
+        GUI = frame
         global INFO, ERROR, SUCCESS, FAILED
         INFO = "info"
         ERROR = "error"
@@ -684,9 +689,9 @@ def set_gui(frame):
 
 
 def log(prefix, s):
-    if gui is not None:
-        gui.write(prefix, s)
-    elif is_color:
+    if GUI is not None:
+        GUI.write(prefix, s)
+    elif IS_COLOR:
         print('[{}] {}'.format(prefix['c'], s))
     else:
         print('[{}] {}'.format(prefix['b'], s))
