@@ -65,7 +65,7 @@ IS_COLOR = False
 def make_table(filename):
     """Make tables from excel file."""
     if not os.path.isfile(filename):
-        raise NameError('%s is not a valid filename' % filename)
+        raise NameError(f'{filename} is not a valid filename')
     book_xlrd = xlrd.open_workbook(filename)
 
     excel = {}
@@ -84,11 +84,11 @@ def make_table(filename):
         # log(sheet_name +' sheet')
         data = excel['data'][sheet_name] = {}
         meta = excel['meta'][sheet_name] = {}
-        meta['kv'] = ('kv' in sheet_name_array)
+        meta['kv'] = 'kv' in sheet_name_array
 
         # 必须大于4行
         if sheet.nrows < 4:
-            return {}, -1, 'sheet[{}] rows must > 4'.format(sheet_name)
+            return {}, -1, f'sheet[{sheet_name}] rows must > 4'
 
         # 解析标题和类型
         col_idx = 1
@@ -100,12 +100,12 @@ def make_table(filename):
             type_type = sheet.cell_type(2, col_idx)
             # 检查标题数据格式
             if title is None:
-                return {}, -1, 'sheet[{}] title columns[{}] must be String'.format(sheet_name, col_idx + 1)
+                return {}, -1, f'sheet[{sheet_name}] title columns[{col_idx + 1}] must be String'
             if title_type != xlrd.XL_CELL_TEXT:
-                return {}, -1, 'sheet[{}] title columns[{}] must be String'.format(sheet_name, col_idx + 1)
+                return {}, -1, f'sheet[{sheet_name}] title columns[{col_idx + 1}] must be String'
             # 检查类型数据格式
             if type_type != xlrd.XL_CELL_TEXT:
-                return {}, -1, 'sheet[{}] type columns[{}] must be String'.format(sheet_name, col_idx + 1)
+                return {}, -1, f'sheet[{sheet_name}] type columns[{col_idx + 1}] must be String'
             if (type_name != INT
                     and type_name != FLOAT
                     and type_name != STRING
@@ -120,7 +120,7 @@ def make_table(filename):
                     and type_name != COMMENT
                     and type_name != PYTHON
                 ):
-                return {}, -1, 'sheet[{}] type column[{}] type wrong'.format(sheet_name, col_idx + 1)
+                return {}, -1, f'sheet[{sheet_name}] type column[{col_idx + 1}] type wrong'
             type_dict[title] = type_name
 
         meta['type_dict'] = type_dict
@@ -133,12 +133,12 @@ def make_table(filename):
             col_type = str(sheet.cell_value(2, col_idx)).lower()
             if key in (KEY_1, KEY_2, KEY_3):
                 if col_type not in (INT, FLOAT, STRING):
-                    return {}, -1, 'sheet[{}] {} type must be Int, Float, or String'.format(sheet_name, key)
+                    return {}, -1, f'sheet[{sheet_name}] {key} type must be Int, Float, or String'
                 meta[key] = col_name
 
         # 检查主键
         if (KEY_3 in meta and not (KEY_2 in meta and KEY_1 in meta)) or (KEY_2 in meta and KEY_1 not in meta) or (KEY_1 not in meta):
-            return {}, -1, 'sheet[{}] {} {} {} are wrong'.format(sheet_name, KEY_1, KEY_2, KEY_3)
+            return {}, -1, f'sheet[{sheet_name}] {KEY_1} {KEY_2} {KEY_3} are wrong'
 
         key1 = meta[KEY_1] if KEY_1 in meta else None
         key2 = meta[KEY_2] if KEY_2 in meta else None
@@ -204,32 +204,32 @@ def make_table(filename):
                 if key_v2 not in data[key_v1]:
                     data[key_v1][key_v2] = {}
                 if key_v3 is None:
-                    return {}, -1, 'sheet[{}][{}] {} data "{}" is empty'.format(sheet_name, row_idx + 1, KEY_3, key3)
+                    return {}, -1, f'sheet[{sheet_name}][{row_idx + 1}] {KEY_3} data "{key3}" is empty'
                 elif key_v3 in data[key_v1][key_v2]:
-                    return {}, -1, 'sheet[{}][{}] {} data "{}" is duplicated'.format(sheet_name, row_idx + 1, KEY_3, key3)
+                    return {}, -1, f'sheet[{sheet_name}][{row_idx + 1}] {KEY_3} data "{key3}" is duplicated'
                 else:
                     data[key_v1][key_v2][key_v3] = row
-                    lang_suffix = '{}_{}_{}'.format(key_v1, key_v2, key_v3)
+                    lang_suffix = f'{key_v1}_{key_v2}_{key_v3}'
             elif not (key1 is None or key2 is None):
                 if key_v1 not in data:
                     data[key_v1] = {}
                 if key_v2 is None:
-                    return {}, -1, 'sheet[{}][{}] {} data "{}" is empty'.format(sheet_name, row_idx + 1, KEY_2, key2)
+                    return {}, -1, f'sheet[{sheet_name}][{row_idx + 1}] {KEY_2} data "{key2}" is empty'
                 elif key_v2 in data[key_v1]:
-                    return {}, -1, 'sheet[{}][{}] {} data "{}" is duplicated'.format(sheet_name, row_idx + 1, KEY_2, key2)
+                    return {}, -1, f'sheet[{sheet_name}][{row_idx + 1}] {KEY_2} data "{key2}" is duplicated'
                 else:
                     data[key_v1][key_v2] = row
-                    lang_suffix = '{}_{}'.format(key_v1, key_v2)
+                    lang_suffix = f'{key_v1}_{key_v2}'
             elif key1 is not None:
                 if key_v1 is None:
-                    return {}, -1, 'sheet[{}][{}] {} data "{}" is empty'.format(sheet_name, row_idx + 1, KEY_1, key1)
+                    return {}, -1, f'sheet[{sheet_name}][{row_idx + 1}] {KEY_1} data "{key1}" is empty'
                 elif key_v1 in data:
-                    return {}, -1, 'sheet[{}][{}] {} data "{}" is duplicated'.format(sheet_name, row_idx + 1, KEY_1, key1)
+                    return {}, -1, f'sheet[{sheet_name}][{row_idx + 1}] {KEY_1} data "{key1}" is duplicated'
                 else:
                     data[key_v1] = row
                     lang_suffix = str(key_v1)
             else:
-                return {}, -1, 'sheet[{}] missing "Key"s'.format(sheet_name)
+                return {}, -1, f'sheet[{sheet_name}] missing "Key"s'
 
             for k, v in lang_kv.items():
                 lang_id = v + lang_suffix
@@ -507,7 +507,7 @@ def write_to_gd_row(row, type_dict, outfp, depth):
         else:
             outfp.close()
             raise RuntimeError(
-                'key "{}" type "{}" is wrong'.format(key, type_dict[key]))
+                f'key "{key}" type "{type_dict[key]}" is wrong')
 
         cnt += 1
         if cnt == len(row):
@@ -573,13 +573,13 @@ def check_config():
             json_file.write(json.dumps(default_config, indent=True))
             json_file.close()
             subprocess.check_call(['attrib', '+H', CONFIG_FILE])
-            log(INFO, 'generate config at {}'.format(CONFIG_FILE))
+            log(INFO, f'generate config at {CONFIG_FILE}')
 
 
 def load_config():
     """Load config file."""
     check_config()
-    log(INFO, 'load config from \t{}'.format(CONFIG_FILE))
+    log(INFO, f'load config from \t{CONFIG_FILE}')
 
     with open(CONFIG_FILE) as json_file:
         config = json.load(json_file)
@@ -604,7 +604,7 @@ def save_config():
         json_file.truncate(0)  # need '0' when using r+
         json_file.write(json.dumps(config, indent=True))
         json_file.close()
-        log(INFO, 'save config at {}'.format(CONFIG_FILE))
+        log(INFO, f'save config at {CONFIG_FILE}')
 
 
 def main():
@@ -613,13 +613,13 @@ def main():
     GD_CNT = 0
     input_path = INPUT_FOLDER
     output_path = OUTPUT_FOLDER
-    log(INFO, 'input path: \t{}'.format(input_path))
-    log(INFO, 'output path: \t{}'.format(output_path))
+    log(INFO, f'input path: \t{input_path}')
+    log(INFO, f'output path: \t{output_path}')
     if not os.path.exists(input_path):
         raise RuntimeError('input path does NOT exist.')
     if not os.path.exists(output_path):
         os.mkdir(output_path)
-        log(INFO, 'make a new dir: \t{}'.format(output_path))
+        log(INFO, f'make a new dir: \t{output_path}')
 
     xls_files = os.listdir(input_path)
     if len(xls_files) == 0:
@@ -632,7 +632,7 @@ def main():
     # filer files by .xls
     xls_files = [x for x in xls_files
                  if (x[-4:] in ['.xls'] or x[-5:] in ['.xlsm', '.xlsx']) and x[0:2] not in ['~$']]
-    log(INFO, 'total XLS: \t\t%s' % len(xls_files))
+    log(INFO, f'total XLS: \t\t{len(xls_files)}')
 
     for i in range(len(xls_files)):
         xls_file = xls_files[i]
@@ -659,14 +659,14 @@ def run():
         load_config()
         main()
         global GD_CNT
-        log(INFO, 'total GDScript: \t\t{}'.format(GD_CNT))
+        log(INFO, f'total GDScript: \t\t{GD_CNT}')
         log(INFO, 'done.')
         # log(INFO, 'press Enter to exit...')
         # input()
     except (RuntimeError, ValueError, SyntaxError, AssertionError, PermissionError) as err:
         errType = str(type(err))
         errType = re.findall(r"<class \'(.+?)\'>", errType)[0]
-        errStr = '[%s] ' % errType + str(err)
+        errStr = f'[{errType + str(err)}] '
         log(ERROR, errStr)
         # log(INFO, 'check error please...')
         # input()
