@@ -354,7 +354,7 @@ def get_float_arr(v):
     res_str = "["
     i = 0
     for val in tmp_vec_str:
-        if val != None and val != "":
+        if val is not None and val != "":
             if i != 0:
                 res_str += ", "
             res_str = res_str + val
@@ -371,7 +371,7 @@ def get_string_arr(v):
     res_str = "["
     i = 0
     for val in tmp_vec_str:
-        if val != None and val != "":
+        if val is not None and val != "":
             if i != 0:
                 res_str += ", "
             res_str = res_str + '"' + val + '"'
@@ -388,7 +388,7 @@ def get_bool_arr(v):
     res_str = "["
     i = 0
     for val in tmp_vec_str:
-        if val != None and val != "":
+        if val is not None and val != "":
             if i != 0:
                 res_str += ", "
             res_str = res_str + val.lower()
@@ -408,7 +408,7 @@ def get_vector2(v):
     res_str = "Vector2("
     i = 0
     for val in tmp_vec_str:
-        if val != None and val != "":
+        if val is not None and val != "":
             if i != 0:
                 res_str += ", "
             res_str = res_str + val.lower()
@@ -428,7 +428,7 @@ def get_vector3(v):
     res_str = "Vector3("
     i = 0
     for val in tmp_vec_str:
-        if val != None and val != "":
+        if val is not None and val != "":
             if i != 0:
                 res_str += ", "
             res_str = res_str + val.lower()
@@ -448,7 +448,7 @@ def get_color(v):
     res_str = "Color("
     i = 0
     for val in tmp_vec_str:
-        if val != None and val != "":
+        if val is not None and val != "":
             if i != 0:
                 res_str += ", "
             res_str = res_str + val.lower()
@@ -507,11 +507,11 @@ def write_to_gd_script(excel, output_path, xls_file):
 def write_to_gd_key(data, keys, type_dict, outfp, depth):
     """Write to GDScript. Promary key style sheet."""
     cnt = 0
-    keyX = keys[depth - 1]
+    key_x = keys[depth - 1]
     indent = get_indent(depth)
     prefix = (
         ("{}:\r\n" + indent + "{{\r\n")
-        if type_dict[keyX] in (INT, FLOAT)
+        if type_dict[key_x] in (INT, FLOAT)
         else ('"{}":\r\n' + indent + "{{\r\n")
     )
     suffix_comma = "},\r\n"
