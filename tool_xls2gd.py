@@ -242,7 +242,7 @@ def make_table(filename):
 
 
 def format_str(v):
-    """Function printing python version."""
+    """Format strings."""
     if type(v) == int or type(v) == float:
         v = str(v)
     s = v
@@ -253,31 +253,35 @@ def format_str(v):
 
 
 def get_int(v):
-    """Function printing python version."""
+    """Get interger."""
     if v is None:
         return 'null'
     return v
 
 
 def get_float(v):
+    """Get float."""
     if v is None:
         return 'null'
     return v
 
 
 def get_string(v):
+    """Get string."""
     if v is None:
         return 'null'
     return '\"' + v + '\"'
 
 
 def get_bool(v):
+    """Get boolean."""
     if v is None:
         return 'null'
     return v
 
 
 def get_int_arr(v):
+    """Get interger array."""
     if v is None:
         return 'null'
     tmp_vec_str = v.split(',')
@@ -294,6 +298,7 @@ def get_int_arr(v):
 
 
 def get_float_arr(v):
+    """Get float array."""
     if v is None:
         return 'null'
     tmp_vec_str = v.split(',')
@@ -310,6 +315,7 @@ def get_float_arr(v):
 
 
 def get_string_arr(v):
+    """Get string array."""
     if v is None:
         return 'null'
     tmp_vec_str = v.split(',')
@@ -326,6 +332,7 @@ def get_string_arr(v):
 
 
 def get_bool_arr(v):
+    """Get boolean array."""
     if v is None:
         return 'null'
     tmp_vec_str = v.split(',')
@@ -342,6 +349,7 @@ def get_bool_arr(v):
 
 
 def get_vector2(v):
+    """Get Vector2."""
     if v is None:
         return 'null'
     tmp_vec_str = v.split(',')
@@ -361,6 +369,7 @@ def get_vector2(v):
 
 
 def get_vector3(v):
+    """Get Vector3."""
     if v is None:
         return 'null'
     tmp_vec_str = v.split(',')
@@ -399,6 +408,7 @@ def get_euler(v):
 
 
 def get_color(v):
+    """Get Color."""
     if v is None:
         return 'null'
     tmp_vec_str = v.split(',')
@@ -418,6 +428,7 @@ def get_color(v):
 
 
 def get_gd(v):
+    """Get GDScript."""
     if not v:
         return 'null'
     return v
