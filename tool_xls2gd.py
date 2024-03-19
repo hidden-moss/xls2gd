@@ -646,12 +646,13 @@ def write_to_csv(sheet, sheet_name, output_csv_path, xls_file):
     filenames = ["id", DEFAULT_LANG]
     data_csv = {}
 
-    # read old csv
-    with open(csv_file_fullpath, encoding="utf-8", newline="") as f:
-        r = csv.DictReader(f)
-        filenames = r.fieldnames
-        for row in r:
-            data_csv[row["id"]] = row
+    if os.path.isfile(csv_file_fullpath):
+        # read old csv
+        with open(csv_file_fullpath, encoding="utf-8", newline="") as f:
+            r = csv.DictReader(f)
+            filenames = r.fieldnames
+            for row in r:
+                data_csv[row["id"]] = row
 
     # update data_csv
     for key, value in sheet.items():
