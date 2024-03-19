@@ -223,7 +223,7 @@ class MainFrame(wx.Frame):
         self.logs.WriteText(prefix)
         self.logs.EndTextColour()
         self.logs.WriteText("]")
-        self.logs.WriteText(" {}\n".format(s))
+        self.logs.WriteText(f" {s}\n")
 
     def resource_path(self, relative_path):
         """Get absolute path to resource, works for dev and for PyInstaller"""
