@@ -57,14 +57,14 @@ class MainFrame(wx.Frame):
         self.tc1 = wx.TextCtrl(self.panel)
         self.sizer_cfg_1.Add(self.tc1, proportion=1)
 
-        # Config - output path
+        # Config - output gdscript path
         self.sizer_cfg_2 = wx.BoxSizer(wx.HORIZONTAL)
         self.st2 = wx.StaticText(self.panel, label=" Output Path:", size=(120, -1))
         self.sizer_cfg_2.Add(self.st2, flag=wx.RIGHT, border=4)
         self.tc2 = wx.TextCtrl(self.panel)
         self.sizer_cfg_2.Add(self.tc2, proportion=1)
 
-        # Config - output name template
+        # Config - output gdscript name template
         self.sizer_cfg_3 = wx.BoxSizer(wx.HORIZONTAL)
         self.st3 = wx.StaticText(self.panel, label=" Name Template:", size=(120, -1))
         self.sizer_cfg_3.Add(self.st3, flag=wx.RIGHT, border=4)
@@ -169,8 +169,8 @@ class MainFrame(wx.Frame):
         """Save the config file."""
         # print('save_config')
         x2l.INPUT_FOLDER = self.tc1.GetValue()
-        x2l.OUTPUT_FOLDER = self.tc2.GetValue()
-        x2l.OUTPUT_NAME_TEMPLATE = self.tc3.GetValue()
+        x2l.OUTPUT_GD_FOLDER = self.tc2.GetValue()
+        x2l.OUTPUT_GD_NAME_TEMPLATE = self.tc3.GetValue()
         x2l.save_config()
 
     def load_config(self):
@@ -184,8 +184,8 @@ class MainFrame(wx.Frame):
         self.tc2.Refresh()
         self.tc3.Refresh()
         self.tc1.write(x2l.INPUT_FOLDER)
-        self.tc2.write(x2l.OUTPUT_FOLDER)
-        self.tc3.write(x2l.OUTPUT_NAME_TEMPLATE)
+        self.tc2.write(x2l.OUTPUT_GD_FOLDER)
+        self.tc3.write(x2l.OUTPUT_GD_NAME_TEMPLATE)
 
     def on_config_checked(self, event):
         """Config checkbox checked."""
