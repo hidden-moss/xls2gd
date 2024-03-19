@@ -472,6 +472,7 @@ def get_gd(v):
 
 def get_translate(v):
     """Get translate."""
+    # TODO: check translate
     if v is None:
         return "null"
     return '"' + v + '"'
@@ -485,9 +486,9 @@ def write_to_gd_script(excel, output_gd_path, xls_file):
         key2 = meta[KEY_2] if KEY_2 in meta else None
         key3 = meta[KEY_3] if KEY_3 in meta else None
 
-        file_name = OUTPUT_GD_NAME_TEMPLATE.format(sheet_name=sheet_name)
+        gd_file_name = OUTPUT_GD_NAME_TEMPLATE.format(sheet_name=sheet_name)
         suffix = ""
-        outfp = codecs.open(output_gd_path + "/" + file_name, "w", "utf-8")
+        outfp = codecs.open(output_gd_path + "/" + gd_file_name, "w", "utf-8")
         outfp.write(SCRIPT_HEAD % (excel["filename"].replace(".//", "")))
         outfp.write("var " + sheet_name + suffix + " = {\r\n")
 
@@ -508,7 +509,7 @@ def write_to_gd_script(excel, output_gd_path, xls_file):
         outfp.close()
         global GD_CNT
         GD_CNT += 1
-        log(SUCCESS, f"[{GD_CNT:02d}] {xls_file:{MAX_XLS_NAME_LEN}} => {file_name}")
+        log(SUCCESS, f"[{GD_CNT:02d}] {xls_file:{MAX_XLS_NAME_LEN}} => {gd_file_name}")
 
 
 def write_to_gd_key(data, keys, type_dict, outfp, depth):
@@ -710,7 +711,7 @@ def main():
         if (x[-4:] in [".xls"] or x[-5:] in [".xlsm", ".xlsx"]) and x[0:2] not in ["~$"]
     ]
     log(INFO, f"total XLS: \t\t{len(xls_files)}")
-
+    
     for _, xls_file in enumerate(xls_files):
         t, ret, errstr = make_table(f"{INPUT_FOLDER}/{xls_file}")
         if ret != 0:
