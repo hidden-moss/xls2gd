@@ -26,8 +26,8 @@ __maintainer__ = "Yuancheng Zhang"
 __status__ = "Development"
 
 INPUT_FOLDER = "./"
-OUTPUT_FOLDER = "./"
-OUTPUT_NAME_TEMPLATE = "data_{sheet_name}.gd"
+OUTPUT_GD_FOLDER = "./"
+OUTPUT_GD_NAME_TEMPLATE = "data_{sheet_name}.gd"
 
 
 INFO = {"c": "\033[36minfo\033[0m", "b": "info"}
@@ -473,7 +473,7 @@ def write_to_gd_script(excel, output_path, xls_file):
         key2 = meta[KEY_2] if KEY_2 in meta else None
         key3 = meta[KEY_3] if KEY_3 in meta else None
 
-        file_name = OUTPUT_NAME_TEMPLATE.format(sheet_name=sheet_name)
+        file_name = OUTPUT_GD_NAME_TEMPLATE.format(sheet_name=sheet_name)
         suffix = ""
         outfp = codecs.open(output_path + "/" + file_name, "w", "utf-8")
         outfp.write(SCRIPT_HEAD % (excel["filename"].replace(".//", "")))
@@ -615,8 +615,8 @@ def check_config():
     if not os.path.isfile(CONFIG_FILE):
         default_config = {
             "input_folder": INPUT_FOLDER,
-            "output_folder": OUTPUT_FOLDER,
-            "output_name_template": OUTPUT_NAME_TEMPLATE,
+            "output_folder": OUTPUT_GD_FOLDER,
+            "output_name_template": OUTPUT_GD_NAME_TEMPLATE,
         }
         with open(CONFIG_FILE, "w", encoding="utf-8") as json_file:
             json_file.write(json.dumps(default_config, indent=True))
@@ -632,10 +632,10 @@ def load_config():
 
     with open(CONFIG_FILE, encoding="utf-8") as json_file:
         config = json.load(json_file)
-        global INPUT_FOLDER, OUTPUT_FOLDER, OUTPUT_NAME_TEMPLATE
+        global INPUT_FOLDER, OUTPUT_GD_FOLDER, OUTPUT_GD_NAME_TEMPLATE
         INPUT_FOLDER = config["input_folder"]
-        OUTPUT_FOLDER = config["output_folder"]
-        OUTPUT_NAME_TEMPLATE = config["output_name_template"]
+        OUTPUT_GD_FOLDER = config["output_folder"]
+        OUTPUT_GD_NAME_TEMPLATE = config["output_name_template"]
         json_file.close()
 
 
@@ -646,8 +646,8 @@ def save_config():
 
     config = {
         "input_folder": INPUT_FOLDER,
-        "output_folder": OUTPUT_FOLDER,
-        "output_name_template": OUTPUT_NAME_TEMPLATE,
+        "output_folder": OUTPUT_GD_FOLDER,
+        "output_name_template": OUTPUT_GD_NAME_TEMPLATE,
     }
     with open(CONFIG_FILE, "r+", encoding="utf-8") as json_file:
         json_file.truncate(0)  # need '0' when using r+
@@ -661,7 +661,7 @@ def main():
     global GD_CNT
     GD_CNT = 0
     input_path = INPUT_FOLDER
-    output_path = OUTPUT_FOLDER
+    output_path = OUTPUT_GD_FOLDER
     log(INFO, f"input path: \t{input_path}")
     log(INFO, f"output path: \t{output_path}")
     if not os.path.exists(input_path):
