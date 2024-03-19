@@ -531,7 +531,7 @@ def write_to_gd_script(excel, output_gd_path, output_csv_path, xls_file):
         if meta["has_csv"]:
             csv_sheet = excel["csv"][sheet_name]
             if len(csv_sheet) > 0:
-                write_to_csv(csv_sheet, sheet_name, output_csv_path)
+                write_to_csv(csv_sheet, sheet_name, output_csv_path, xls_file)
 
 
 def write_to_gd_key(data, keys, type_dict, outfp, depth):
@@ -639,9 +639,8 @@ def write_to_gd_kv(data, keys, type_dict, outfp, depth):
         outfp.write(suffix_end if cnt == len(data) else suffix_comma)
 
 
-def write_to_csv(sheet, sheet_name, output_csv_path):
+def write_to_csv(sheet, sheet_name, output_csv_path, xls_file):
     """Export to CSV."""
-    print(json.dumps(sheet, indent=4))
     csv_file_name = OUTPUT_CSV_NAME_TEMPLATE.format(sheet_name=sheet_name)
     csv_file_fullpath = output_csv_path + "/" + csv_file_name
     filenames = ["id", DEFAULT_LANG]
@@ -654,10 +653,12 @@ def write_to_csv(sheet, sheet_name, output_csv_path):
         for row in r:
             data_csv[row["id"]] = row
 
-    print(filenames)
-    print(json.dumps(data_csv, indent=4))
-    
     # update data_csv
+    for key, value in sheet.items():
+        if data_csv.get(key) is None:
+            data_csv[key] = {}
+        data_csv[key]["id"] = key
+        data_csv[key][DEFAULT_LANG] = value
 
     # write new csv
     with open(csv_file_fullpath, "w", encoding="utf-8", newline="") as f:
@@ -665,7 +666,7 @@ def write_to_csv(sheet, sheet_name, output_csv_path):
         w.writeheader()
         for row in data_csv.values():
             w.writerow(row)
-        log(SUCCESS, f"[{GD_CNT:02d}] {'':{MAX_XLS_NAME_LEN}} => {csv_file_name}")
+        log(SUCCESS, f"[{GD_CNT:02d}] {xls_file:{MAX_XLS_NAME_LEN}} => {csv_file_name}")
 
 
 def get_indent(depth):
