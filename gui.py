@@ -39,11 +39,10 @@ class MainFrame(wx.Frame):
 
         self.sizer_v = wx.BoxSizer(wx.VERTICAL)
 
-        font1 = wx.Font(8, wx.MODERN, wx.NORMAL, wx.NORMAL, False, u"Consolas")
+        font1 = wx.Font(8, wx.MODERN, wx.NORMAL, wx.NORMAL, False, "Consolas")
 
         # 采用多行显示
-        self.logs = rt.RichTextCtrl(
-            self.panel, style=wx.TE_MULTILINE | wx.TE_READONLY)
+        self.logs = rt.RichTextCtrl(self.panel, style=wx.TE_MULTILINE | wx.TE_READONLY)
         self.logs.SetFont(font1)
 
         # 1为响应容器改变大小，expand占据窗口的整个宽度
@@ -52,25 +51,21 @@ class MainFrame(wx.Frame):
 
         # Config - input path
         self.sizer_cfg_1 = wx.BoxSizer(wx.HORIZONTAL)
-        self.st1 = wx.StaticText(
-            self.panel, label=" Input Path:", size=(120, -1))
+        self.st1 = wx.StaticText(self.panel, label=" Input Path:", size=(120, -1))
         self.sizer_cfg_1.Add(self.st1, flag=wx.RIGHT, border=4)
         self.tc1 = wx.TextCtrl(self.panel)
         self.sizer_cfg_1.Add(self.tc1, proportion=1)
 
         # Config - output path
         self.sizer_cfg_2 = wx.BoxSizer(wx.HORIZONTAL)
-        self.st2 = wx.StaticText(
-            self.panel, label=" Output Path:", size=(120, -1))
+        self.st2 = wx.StaticText(self.panel, label=" Output Path:", size=(120, -1))
         self.sizer_cfg_2.Add(self.st2, flag=wx.RIGHT, border=4)
         self.tc2 = wx.TextCtrl(self.panel)
         self.sizer_cfg_2.Add(self.tc2, proportion=1)
 
         # Config - output name template
         self.sizer_cfg_3 = wx.BoxSizer(wx.HORIZONTAL)
-        self.st3 = wx.StaticText(
-            self.panel, label=" Name Template:", size=(120, -1)
-        )
+        self.st3 = wx.StaticText(self.panel, label=" Name Template:", size=(120, -1))
         self.sizer_cfg_3.Add(self.st3, flag=wx.RIGHT, border=4)
         self.tc3 = wx.TextCtrl(self.panel)
         self.sizer_cfg_3.Add(self.tc3, proportion=1)
@@ -99,7 +94,7 @@ class MainFrame(wx.Frame):
         self.sizer_btm_l.Add(self.btn_convert, flag=wx.LEFT, border=4)
 
         # Version
-        version_str = __version__ + ' '
+        version_str = __version__ + " "
         self.st_version = wx.StaticText(
             self.panel, label=version_str, size=(100, -1), style=wx.ALIGN_RIGHT
         )
@@ -113,12 +108,17 @@ class MainFrame(wx.Frame):
         # Copyright
         copyright_link_str = "©2024 Hiden Moss"
         self.st_copyright_link = hl.HyperLinkCtrl(
-            self.panel, label=copyright_link_str, URL="http://www.hiddenmoss.com/", size=(100, -1), style=wx.ALIGN_RIGHT
+            self.panel,
+            label=copyright_link_str,
+            URL="http://www.hiddenmoss.com/",
+            size=(100, -1),
+            style=wx.ALIGN_RIGHT,
         )
 
         self.st_copyright_link.EnableRollover(True)
         self.st_copyright_link.SetToolTip(
-            wx.ToolTip("©2021 Copyright Hidden Moss Inc."))
+            wx.ToolTip("©2021 Copyright Hidden Moss Inc.")
+        )
         self.st_copyright_link.UpdateLink()
 
         # Bottom
@@ -130,8 +130,7 @@ class MainFrame(wx.Frame):
         )
 
         self.sizer_v.Add((-1, 4))
-        self.sizer_v.Add(self.sizer_btm, proportion=0,
-                         flag=wx.EXPAND, border=4)
+        self.sizer_v.Add(self.sizer_btm, proportion=0, flag=wx.EXPAND, border=4)
         self.sizer_btm.Add(
             self.sizer_btm_l, proportion=1, flag=wx.LEFT | wx.EXPAND, border=4
         )
@@ -228,8 +227,7 @@ class MainFrame(wx.Frame):
 
 class App(wx.App):
     def OnInit(self):
-        self.main_frame = MainFrame(
-            None, "Excel to GDScript Convertor")
+        self.main_frame = MainFrame(None, "Excel to GDScript Convertor")
         self.main_frame.Show()
         if x2l:
             x2l.set_gui(self.main_frame)
