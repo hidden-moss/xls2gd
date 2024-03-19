@@ -337,7 +337,7 @@ def get_int_arr(v):
     res_str = "["
     i = 0
     for val in tmp_vec_str:
-        if val != None and val != "":
+        if val is not None and val != "":
             if i != 0:
                 res_str += ", "
             res_str = res_str + val
@@ -711,7 +711,7 @@ def run():
             IS_COLOR = True
 
     try:
-        log(INFO, "time: \t\t{0:%Y-%m-%d %H:%M:%S}".format(datetime.datetime.now()))
+        log(INFO, f"time: \t\t{datetime.datetime.now()}")
         load_config()
         main()
         log(INFO, f"total GDScript: \t\t{GD_CNT}")
@@ -725,10 +725,10 @@ def run():
         AssertionError,
         PermissionError,
     ) as err:
-        errType = str(type(err))
-        errType = re.findall(r"<class \'(.+?)\'>", errType)[0]
-        errStr = f"[{errType + str(err)}] "
-        log(ERROR, errStr)
+        err_type = str(type(err))
+        err_type = re.findall(r"<class \'(.+?)\'>", err_type)[0]
+        err_str = f"[{err_type + str(err)}] "
+        log(ERROR, err_str)
         # log(INFO, 'check error please...')
         # input()
 
