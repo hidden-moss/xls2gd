@@ -16,6 +16,7 @@ import subprocess
 import json
 import re
 import xlrd
+import csv
 
 __authors__ = ["Yuancheng Zhang"]
 __copyright__ = "Copyright 2024, Hidden Moss"
@@ -75,6 +76,7 @@ def make_table(filename):
     excel["filename"] = filename
     excel["data"] = {}
     excel["meta"] = {}
+    excel["csv"] = {}
 
     for sheet in book_xlrd.sheets():
         sheet_name = sheet.name.replace(" ", "_")
@@ -87,7 +89,9 @@ def make_table(filename):
         # log(sheet_name +' sheet')
         data = excel["data"][sheet_name] = {}
         meta = excel["meta"][sheet_name] = {}
+        t_csv = excel["csv"][sheet_name] = {}
         meta["kv"] = "kv" in sheet_name_array
+        meta["has_csv"] = False
 
         # 必须大于4行
         if sheet.nrows < 4:
@@ -143,6 +147,8 @@ def make_table(filename):
                     f"sheet[{sheet_name}] type column[{col_idx + 1}] type wrong",
                 )
             type_dict[title] = type_name
+            if type_name == TRANSLATE:
+                meta["has_csv"] = True
 
         meta["type_dict"] = type_dict
 
@@ -217,6 +223,16 @@ def make_table(filename):
                     v = "true" if value == 1 else "false"
                 elif type_dict[title] == TRANSLATE and vtype == xlrd.XL_CELL_TEXT:
                     v = str(value)
+                    if key_v1 and key_v2 and key_v3:
+                        key_csv = f"{sheet_name}_{title}_{key_v1}_{key_v2}_{key_v3}"
+                    elif key_v1 and key_v2:
+                        key_csv = f"{sheet_name}_{title}_{key_v1}_{key_v2}"
+                    elif key_v1:
+                        key_csv = f"{sheet_name}_{title}_{key_v1}"
+                    key_csv = key_csv.replace(" ", "_").upper()
+                    t_csv[key_csv] = str(value)
+                    v = key_csv
+
                 elif type_dict[title] == COMMENT:
                     continue
 
@@ -478,7 +494,7 @@ def get_translate(v):
     return '"' + v + '"'
 
 
-def write_to_gd_script(excel, output_gd_path, xls_file):
+def write_to_gd_script(excel, output_gd_path, output_csv_path, xls_file):
     """Write to GDScript."""
     for sheet_name, sheet in excel["data"].items():
         meta = excel["meta"][sheet_name]
@@ -511,6 +527,10 @@ def write_to_gd_script(excel, output_gd_path, xls_file):
         global GD_CNT
         GD_CNT += 1
         log(SUCCESS, f"[{GD_CNT:02d}] {xls_file:{MAX_XLS_NAME_LEN}} => {gd_file_name}")
+        if meta["has_csv"]:
+            csv_sheet = excel["csv"][sheet_name]
+            if len(csv_sheet) > 0:
+                write_to_csv(csv_sheet, sheet_name, output_csv_path)
 
 
 def write_to_gd_key(data, keys, type_dict, outfp, depth):
@@ -618,6 +638,22 @@ def write_to_gd_kv(data, keys, type_dict, outfp, depth):
         outfp.write(suffix_end if cnt == len(data) else suffix_comma)
 
 
+def write_to_csv(sheet, sheet_name, output_csv_path):
+    """Write to CSV."""
+    csv_file_name = OUTPUT_CSV_NAME_TEMPLATE.format(sheet_name=sheet_name)
+    with open(output_csv_path + "/" + csv_file_name, "w", encoding="utf-8") as f:
+        w = csv.DictWriter(f, sheet.keys())
+        w.writeheader()
+        w.writerow(sheet)
+        log(SUCCESS, f"[{GD_CNT:02d}] {'':{MAX_XLS_NAME_LEN}} => {csv_file_name}")
+    # outfp = codecs.open(output_csv_path + "/" + csv_file_name, "w", "utf-8")
+    # outfp.write("key,value\r\n")
+    # for key, value in sheet.items():
+    #     outfp.write(f"{key},{value}\r\n")
+    # outfp.close()
+    # log(SUCCESS, f"[{GD_CNT:02d}] {'':{MAX_XLS_NAME_LEN}} => {csv_file_name}")
+
+
 def get_indent(depth):
     """Get indent."""
     indent = ""
@@ -712,14 +748,15 @@ def main():
         if (x[-4:] in [".xls"] or x[-5:] in [".xlsm", ".xlsx"]) and x[0:2] not in ["~$"]
     ]
     log(INFO, f"total XLS: \t\t{len(xls_files)}")
-    
+
     for _, xls_file in enumerate(xls_files):
         t, ret, err_str = make_table(f"{INPUT_FOLDER}/{xls_file}")
         if ret != 0:
             GD_CNT += 1
             log(FAILED, f"[{GD_CNT:02d}] {xls_file}")
             raise RuntimeError(err_str)
-            write_to_gd_script(t, output_gd_path, xls_file)
+        # print(json.dumps(t, indent=4))
+        write_to_gd_script(t, output_gd_path, output_csv_path, xls_file)
 
 
 def run():
