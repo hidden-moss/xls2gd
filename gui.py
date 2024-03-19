@@ -19,7 +19,7 @@ __authors__ = ["Yuancheng Zhang"]
 __copyright__ = "Copyright 2024, Hidden Moss"
 __credits__ = ["Yuancheng Zhang"]
 __license__ = "MIT"
-__version__ = "v1.1.0"
+__version__ = "v1.2.0"
 __maintainer__ = "Yuancheng Zhang"
 __status__ = "Production"
 
@@ -52,35 +52,35 @@ class MainFrame(wx.Frame):
 
         # Config - input path
         self.sizer_cfg_1 = wx.BoxSizer(wx.HORIZONTAL)
-        self.st1 = wx.StaticText(self.panel, label=" Input Path:", size=(120, -1))
+        self.st1 = wx.StaticText(self.panel, label=" Input Path:", size=(130, -1))
         self.sizer_cfg_1.Add(self.st1, flag=wx.RIGHT, border=4)
         self.tc1 = wx.TextCtrl(self.panel)
         self.sizer_cfg_1.Add(self.tc1, proportion=1)
 
         # Config - output gdscript path
         self.sizer_cfg_2 = wx.BoxSizer(wx.HORIZONTAL)
-        self.st2 = wx.StaticText(self.panel, label=" Output Path (*.gd):", size=(120, -1))
+        self.st2 = wx.StaticText(self.panel, label=" Output Path (*.gd):", size=(130, -1))
         self.sizer_cfg_2.Add(self.st2, flag=wx.RIGHT, border=4)
         self.tc2 = wx.TextCtrl(self.panel)
         self.sizer_cfg_2.Add(self.tc2, proportion=1)
 
         # Config - output gdscript name template
         self.sizer_cfg_3 = wx.BoxSizer(wx.HORIZONTAL)
-        self.st3 = wx.StaticText(self.panel, label=" Name Template (*.gd):", size=(120, -1))
+        self.st3 = wx.StaticText(self.panel, label=" Name Template (*.gd):", size=(130, -1))
         self.sizer_cfg_3.Add(self.st3, flag=wx.RIGHT, border=4)
         self.tc3 = wx.TextCtrl(self.panel)
         self.sizer_cfg_3.Add(self.tc3, proportion=1)
         
         # Config - output gdscript name template
         self.sizer_cfg_4 = wx.BoxSizer(wx.HORIZONTAL)
-        self.st4 = wx.StaticText(self.panel, label=" Output Path (*.csv):", size=(120, -1))
+        self.st4 = wx.StaticText(self.panel, label=" Output Path (*.csv):", size=(130, -1))
         self.sizer_cfg_4.Add(self.st4, flag=wx.RIGHT, border=4)
         self.tc4 = wx.TextCtrl(self.panel)
         self.sizer_cfg_4.Add(self.tc4, proportion=1)
         
         # Config - output gdscript name template
         self.sizer_cfg_5 = wx.BoxSizer(wx.HORIZONTAL)
-        self.st5 = wx.StaticText(self.panel, label=" Name Template (*.csv):", size=(120, -1))
+        self.st5 = wx.StaticText(self.panel, label=" Name Template (*.csv):", size=(130, -1))
         self.sizer_cfg_5.Add(self.st5, flag=wx.RIGHT, border=4)
         self.tc5 = wx.TextCtrl(self.panel)
         self.sizer_cfg_5.Add(self.tc5, proportion=1)
