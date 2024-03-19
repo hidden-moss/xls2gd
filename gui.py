@@ -19,7 +19,7 @@ __authors__ = ["Yuancheng Zhang"]
 __copyright__ = "Copyright 2024, Hidden Moss"
 __credits__ = ["Yuancheng Zhang"]
 __license__ = "MIT"
-__version__ = "v1.2.1"
+__version__ = "v1.2.2"
 __maintainer__ = "Yuancheng Zhang"
 __status__ = "Production"
 
