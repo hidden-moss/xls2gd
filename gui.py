@@ -25,6 +25,7 @@ __status__ = "Production"
 
 
 class MainFrame(wx.Frame):
+    """Main frame of the GUI."""
     prefix_color = {
         "info": "blue",
         "error": "red",
@@ -150,6 +151,7 @@ class MainFrame(wx.Frame):
 
     # 响应button事件
     def on_convert_click(self, event):
+        """Convert button clicked."""
         if self.cb_config.IsChecked():
             self.hide_config()
 
@@ -159,10 +161,12 @@ class MainFrame(wx.Frame):
         self.btn_convert.Enable()
 
     def clear_log(self):
+        """Clear the log."""
         self.logs.Clear()
         self.logs.Refresh()
 
     def save_config(self):
+        """Save the config file."""
         # print('save_config')
         x2l.INPUT_FOLDER = self.tc1.GetValue()
         x2l.OUTPUT_FOLDER = self.tc2.GetValue()
@@ -170,6 +174,7 @@ class MainFrame(wx.Frame):
         x2l.save_config()
 
     def load_config(self):
+        """Load the config file."""
         # print('load_config')
         x2l.load_config()
         self.tc1.Clear()
@@ -183,15 +188,18 @@ class MainFrame(wx.Frame):
         self.tc3.write(x2l.OUTPUT_NAME_TEMPLATE)
 
     def on_config_checked(self, event):
+        """Config checkbox checked."""
         self.toggle_config()
 
     def toggle_config(self):
+        """Toggle the config."""
         if self.cb_config.IsChecked():
             self.show_config()
         else:
             self.hide_config()
 
     def show_config(self):
+        """Show the config."""
         self.load_config()
         self.sizer_v.Show(self.sizer_cfg_1, recursive=True)
         self.sizer_v.Show(self.sizer_cfg_2, recursive=True)
@@ -200,6 +208,7 @@ class MainFrame(wx.Frame):
         self.cb_config.SetValue(True)
 
     def hide_config(self):
+        """Hide the config."""
         self.save_config()
         self.sizer_v.Hide(self.sizer_cfg_1, recursive=True)
         self.sizer_v.Hide(self.sizer_cfg_2, recursive=True)
@@ -208,6 +217,7 @@ class MainFrame(wx.Frame):
         self.cb_config.SetValue(False)
 
     def write(self, prefix, s):
+        """Write log."""
         self.logs.WriteText("[")
         self.logs.BeginTextColour(self.prefix_color[prefix])
         self.logs.WriteText(prefix)
@@ -226,7 +236,9 @@ class MainFrame(wx.Frame):
 
 
 class App(wx.App):
+    """App class."""
     def OnInit(self):
+        """Init the app."""
         self.main_frame = MainFrame(None, "Excel to GDScript Convertor")
         self.main_frame.Show()
         if x2l:
@@ -235,6 +247,7 @@ class App(wx.App):
 
 
 def main():
+    """Main function."""
     app = App()
     app.MainLoop()
 
