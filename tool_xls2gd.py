@@ -22,7 +22,7 @@ __authors__ = ["Yuancheng Zhang"]
 __copyright__ = "Copyright 2024, Hidden Moss"
 __credits__ = ["Yuancheng Zhang"]
 __license__ = "MIT"
-__version__ = "v1.2.0"
+__version__ = "v1.2.1"
 __maintainer__ = "Yuancheng Zhang"
 __status__ = "Development"
 
@@ -224,6 +224,7 @@ def make_table(filename):
                     v = "true" if value == 1 else "false"
                 elif type_dict[title] == TRANSLATE and vtype == xlrd.XL_CELL_TEXT:
                     v = str(value)
+                    v = v.replace("\n", "\\n")
                     if key_v1 and key_v2 and key_v3:
                         key_csv = f"{sheet_name}_{title}_{key_v1}_{key_v2}_{key_v3}"
                     elif key_v1 and key_v2:
@@ -231,7 +232,7 @@ def make_table(filename):
                     elif key_v1:
                         key_csv = f"{sheet_name}_{title}_{key_v1}"
                     key_csv = key_csv.replace(" ", "_").upper()
-                    t_csv[key_csv] = str(value)
+                    t_csv[key_csv] = str(v)
                     v = key_csv
 
                 elif type_dict[title] == COMMENT:
@@ -489,10 +490,7 @@ def get_gd(v):
 
 def get_translate(v):
     """Get translate."""
-    # TODO: check translate
-    if v is None:
-        return "null"
-    return '"' + v + '"'
+    return get_string(v)
 
 
 def write_to_gd_script(excel, output_gd_path, output_csv_path, xls_file):
