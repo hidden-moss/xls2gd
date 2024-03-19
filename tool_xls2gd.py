@@ -22,7 +22,7 @@ __authors__ = ["Yuancheng Zhang"]
 __copyright__ = "Copyright 2024, Hidden Moss"
 __credits__ = ["Yuancheng Zhang"]
 __license__ = "MIT"
-__version__ = "v1.2.1"
+__version__ = "v1.2.2"
 __maintainer__ = "Yuancheng Zhang"
 __status__ = "Development"
 
@@ -225,11 +225,12 @@ def make_table(filename):
                 elif type_dict[title] == TRANSLATE and vtype == xlrd.XL_CELL_TEXT:
                     v = str(value)
                     v = v.replace("\n", "\\n")
-                    if key_v1 and key_v2 and key_v3:
+                    key_csv = ""
+                    if key_v1 is not None and key_v2 is not None and key_v3 is not None:
                         key_csv = f"{sheet_name}_{title}_{key_v1}_{key_v2}_{key_v3}"
-                    elif key_v1 and key_v2:
+                    elif key_v1 is not None and key_v2 is not None:
                         key_csv = f"{sheet_name}_{title}_{key_v1}_{key_v2}"
-                    elif key_v1:
+                    elif key_v1 is not None:
                         key_csv = f"{sheet_name}_{title}_{key_v1}"
                     key_csv = key_csv.replace(" ", "_").upper()
                     t_csv[key_csv] = str(v)
@@ -661,7 +662,7 @@ def write_to_csv(sheet, sheet_name, output_csv_path, xls_file):
 
     # write new csv
     with open(csv_file_fullpath, "w", encoding="utf-8", newline="") as f:
-        w = csv.DictWriter(f, filenames)
+        w = csv.DictWriter(f, filenames, quotechar='"')
         w.writeheader()
         for row in data_csv.values():
             w.writerow(row)
