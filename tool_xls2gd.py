@@ -489,10 +489,7 @@ def get_gd(v):
 
 def get_translate(v):
     """Get translate."""
-    # TODO: check translate
-    if v is None:
-        return "null"
-    return '"' + v + '"'
+    return get_string(v)
 
 
 def write_to_gd_script(excel, output_gd_path, output_csv_path, xls_file):
