@@ -52,7 +52,7 @@ SCRIPT_HEAD = """# @copyright Hidden Moss
 INT, FLOAT, STRING, BOOL = r"int", r"float", r"string", r"bool"
 INT_ARR, FLOAT_ARR, STRING_ARR, BOOL_ARR = r"int[]", r"float[]", r"string[]", r"bool[]"
 VECTOR2, VECTOR3, COLOR = "vector2", "vector3", "color"
-PYTHON, COMMENT = "python", "comment"
+GDSCRIPT, COMMENT = "gdscript", "comment"
 
 CONFIG_FILE = "tool_xls2gd.config"
 
@@ -133,7 +133,7 @@ def make_table(filename):
                 and type_name != VECTOR3
                 and type_name != COLOR
                 and type_name != COMMENT
-                and type_name != PYTHON
+                and type_name != GDSCRIPT
             ):
                 return (
                     {},
@@ -206,12 +206,12 @@ def make_table(filename):
                     v = str(value)
                 elif type_dict[title] == COLOR and vtype == xlrd.XL_CELL_TEXT:
                     v = str(value)
-                elif type_dict[title] == PYTHON and vtype in (
+                elif type_dict[title] == GDSCRIPT and vtype in (
                     xlrd.XL_CELL_TEXT,
                     xlrd.XL_CELL_NUMBER,
                 ):
                     v = str(value)
-                elif type_dict[title] == PYTHON and vtype == xlrd.XL_CELL_BOOLEAN:
+                elif type_dict[title] == GDSCRIPT and vtype == xlrd.XL_CELL_BOOLEAN:
                     v = "true" if value == 1 else "false"
                 elif type_dict[title] == COMMENT:
                     continue
@@ -556,7 +556,7 @@ def write_to_gd_row(row, type_dict, outfp, depth):
             outfp.write(template.format(indent, key, get_vector3(value)))
         elif type_dict[key] == COLOR:
             outfp.write(template.format(indent, key, get_color(value)))
-        elif type_dict[key] == PYTHON:
+        elif type_dict[key] == GDSCRIPT:
             outfp.write(template.format(indent, key, get_gd(value)))
         else:
             outfp.close()
