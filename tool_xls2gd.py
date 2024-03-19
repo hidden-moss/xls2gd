@@ -28,6 +28,8 @@ __status__ = "Development"
 INPUT_FOLDER = "./"
 OUTPUT_GD_FOLDER = "./"
 OUTPUT_GD_NAME_TEMPLATE = "data_{sheet_name}.gd"
+OUTPUT_CSV_FOLDER = "./"
+OUTPUT_CSV_NAME_TEMPLATE = "locale_{sheet_name}.csv"
 
 
 INFO = {"c": "\033[36minfo\033[0m", "b": "info"}
@@ -464,7 +466,7 @@ def get_gd(v):
     return v
 
 
-def write_to_gd_script(excel, output_path, xls_file):
+def write_to_gd_script(excel, output_gd_path, xls_file):
     """Write to GDScript."""
     for sheet_name, sheet in excel["data"].items():
         meta = excel["meta"][sheet_name]
@@ -475,7 +477,7 @@ def write_to_gd_script(excel, output_path, xls_file):
 
         file_name = OUTPUT_GD_NAME_TEMPLATE.format(sheet_name=sheet_name)
         suffix = ""
-        outfp = codecs.open(output_path + "/" + file_name, "w", "utf-8")
+        outfp = codecs.open(output_gd_path + "/" + file_name, "w", "utf-8")
         outfp.write(SCRIPT_HEAD % (excel["filename"].replace(".//", "")))
         outfp.write("var " + sheet_name + suffix + " = {\r\n")
 
@@ -615,8 +617,10 @@ def check_config():
     if not os.path.isfile(CONFIG_FILE):
         default_config = {
             "input_folder": INPUT_FOLDER,
-            "output_folder": OUTPUT_GD_FOLDER,
-            "output_name_template": OUTPUT_GD_NAME_TEMPLATE,
+            "output_gd_folder": OUTPUT_GD_FOLDER,
+            "output_gd_name_template": OUTPUT_GD_NAME_TEMPLATE,
+            "output_csv_folder": OUTPUT_CSV_FOLDER,
+            "output_csv_name_template": OUTPUT_CSV_NAME_TEMPLATE,
         }
         with open(CONFIG_FILE, "w", encoding="utf-8") as json_file:
             json_file.write(json.dumps(default_config, indent=True))
@@ -632,10 +636,12 @@ def load_config():
 
     with open(CONFIG_FILE, encoding="utf-8") as json_file:
         config = json.load(json_file)
-        global INPUT_FOLDER, OUTPUT_GD_FOLDER, OUTPUT_GD_NAME_TEMPLATE
+        global INPUT_FOLDER, OUTPUT_GD_FOLDER, OUTPUT_GD_NAME_TEMPLATE, OUTPUT_CSV_FOLDER, OUTPUT_CSV_NAME_TEMPLATE
         INPUT_FOLDER = config["input_folder"]
-        OUTPUT_GD_FOLDER = config["output_folder"]
-        OUTPUT_GD_NAME_TEMPLATE = config["output_name_template"]
+        OUTPUT_GD_FOLDER = config["output_gd_folder"]
+        OUTPUT_GD_NAME_TEMPLATE = config["output_gd_name_template"]
+        OUTPUT_CSV_FOLDER = config["output_csv_folder"]
+        OUTPUT_CSV_NAME_TEMPLATE = config["output_csv_name_template"]
         json_file.close()
 
 
@@ -646,8 +652,10 @@ def save_config():
 
     config = {
         "input_folder": INPUT_FOLDER,
-        "output_folder": OUTPUT_GD_FOLDER,
-        "output_name_template": OUTPUT_GD_NAME_TEMPLATE,
+        "output_gd_folder": OUTPUT_GD_FOLDER,
+        "output_gd_name_template": OUTPUT_GD_NAME_TEMPLATE,
+        "output_csv_folder": OUTPUT_CSV_FOLDER,
+        "output_csv_name_template": OUTPUT_CSV_NAME_TEMPLATE,
     }
     with open(CONFIG_FILE, "r+", encoding="utf-8") as json_file:
         json_file.truncate(0)  # need '0' when using r+
@@ -661,14 +669,19 @@ def main():
     global GD_CNT
     GD_CNT = 0
     input_path = INPUT_FOLDER
-    output_path = OUTPUT_GD_FOLDER
+    output_gd_path = OUTPUT_GD_FOLDER
+    output_csv_path = OUTPUT_CSV_FOLDER
     log(INFO, f"input path: \t{input_path}")
-    log(INFO, f"output path: \t{output_path}")
+    log(INFO, f"output *.gd path: \t{output_gd_path}")
+    log(INFO, f"output *.csv path: \t{output_csv_path}")
     if not os.path.exists(input_path):
         raise RuntimeError("input path does NOT exist.")
-    if not os.path.exists(output_path):
-        os.mkdir(output_path)
-        log(INFO, f"make a new dir: \t{output_path}")
+    if not os.path.exists(output_gd_path):
+        os.mkdir(output_gd_path)
+        log(INFO, f"make a new dir: \t{output_gd_path}")
+    if not os.path.exists(output_csv_path):
+        os.mkdir(output_csv_path)
+        log(INFO, f"make a new dir: \t{output_csv_path}")
 
     xls_files = os.listdir(input_path)
     if len(xls_files) == 0:
@@ -686,14 +699,14 @@ def main():
     ]
     log(INFO, f"total XLS: \t\t{len(xls_files)}")
 
-    for i, xls_file in enumerate(xls_files):
+    for _, xls_file in enumerate(xls_files):
         t, ret, errstr = make_table(f"{INPUT_FOLDER}/{xls_file}")
         if ret != 0:
             GD_CNT += 1
             log(FAILED, f"[{GD_CNT:02d}] {xls_file}")
             raise RuntimeError(errstr)
         else:
-            write_to_gd_script(t, output_path, xls_file)
+            write_to_gd_script(t, output_gd_path, xls_file)
 
 
 def run():
