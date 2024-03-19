@@ -55,6 +55,7 @@ INT_ARR, FLOAT_ARR, STRING_ARR, BOOL_ARR = r"int[]", r"float[]", r"string[]", r"
 VECTOR2, VECTOR3, COLOR = "vector2", "vector3", "color"
 GDSCRIPT, COMMENT = "gdscript", "comment"
 TRANSLATE = "translate"
+DEFAULT_LANG = "zh_CN"
 
 CONFIG_FILE = "tool_xls2gd.config"
 
@@ -639,19 +640,32 @@ def write_to_gd_kv(data, keys, type_dict, outfp, depth):
 
 
 def write_to_csv(sheet, sheet_name, output_csv_path):
-    """Write to CSV."""
+    """Export to CSV."""
+    print(json.dumps(sheet, indent=4))
     csv_file_name = OUTPUT_CSV_NAME_TEMPLATE.format(sheet_name=sheet_name)
-    with open(output_csv_path + "/" + csv_file_name, "w", encoding="utf-8") as f:
-        w = csv.DictWriter(f, sheet.keys())
+    csv_file_fullpath = output_csv_path + "/" + csv_file_name
+    filenames = ["id", DEFAULT_LANG]
+    data_csv = {}
+
+    # read old csv
+    with open(csv_file_fullpath, encoding="utf-8", newline="") as f:
+        r = csv.DictReader(f)
+        filenames = r.fieldnames
+        for row in r:
+            data_csv[row["id"]] = row
+
+    print(filenames)
+    print(json.dumps(data_csv, indent=4))
+    
+    # update data_csv
+
+    # write new csv
+    with open(csv_file_fullpath, "w", encoding="utf-8", newline="") as f:
+        w = csv.DictWriter(f, filenames)
         w.writeheader()
-        w.writerow(sheet)
+        for row in data_csv.values():
+            w.writerow(row)
         log(SUCCESS, f"[{GD_CNT:02d}] {'':{MAX_XLS_NAME_LEN}} => {csv_file_name}")
-    # outfp = codecs.open(output_csv_path + "/" + csv_file_name, "w", "utf-8")
-    # outfp.write("key,value\r\n")
-    # for key, value in sheet.items():
-    #     outfp.write(f"{key},{value}\r\n")
-    # outfp.close()
-    # log(SUCCESS, f"[{GD_CNT:02d}] {'':{MAX_XLS_NAME_LEN}} => {csv_file_name}")
 
 
 def get_indent(depth):
