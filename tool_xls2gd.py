@@ -686,9 +686,8 @@ def main():
     ]
     log(INFO, f"total XLS: \t\t{len(xls_files)}")
 
-    for i in range(len(xls_files)):
-        xls_file = xls_files[i]
-        t, ret, errstr = make_table("%s/%s" % (INPUT_FOLDER, xls_file))
+    for i, xls_file in enumerate(xls_files):
+        t, ret, errstr = make_table(f"{INPUT_FOLDER}/{xls_file}")
         if ret != 0:
             GD_CNT += 1
             log(FAILED, "[{:02d}] {}".format(GD_CNT, xls_file))
