@@ -496,12 +496,7 @@ def write_to_gd_script(excel, output_path, xls_file):
         outfp.close()
         global GD_CNT
         GD_CNT += 1
-        log(
-            SUCCESS,
-            "[{{0:02d}}] {{1:{0}}} => {{2}}".format(MAX_XLS_NAME_LEN).format(
-                GD_CNT, xls_file, file_name
-            ),
-        )
+        log(SUCCESS, f"[{GD_CNT:02d}] {xls_file:{MAX_XLS_NAME_LEN}} => {file_name}")
 
 
 def write_to_gd_key(data, keys, type_dict, outfp, depth):
