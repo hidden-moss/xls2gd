@@ -690,7 +690,7 @@ def main():
         t, ret, errstr = make_table(f"{INPUT_FOLDER}/{xls_file}")
         if ret != 0:
             GD_CNT += 1
-            log(FAILED, "[{:02d}] {}".format(GD_CNT, xls_file))
+            log(FAILED, f"[{GD_CNT:02d}] {xls_file}")
             raise RuntimeError(errstr)
         else:
             write_to_gd_script(t, output_path, xls_file)
