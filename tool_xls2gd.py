@@ -477,6 +477,7 @@ def get_translate(v):
         return "null"
     return '"' + v + '"'
 
+
 def write_to_gd_script(excel, output_gd_path, xls_file):
     """Write to GDScript."""
     for sheet_name, sheet in excel["data"].items():
@@ -713,12 +714,11 @@ def main():
     log(INFO, f"total XLS: \t\t{len(xls_files)}")
     
     for _, xls_file in enumerate(xls_files):
-        t, ret, errstr = make_table(f"{INPUT_FOLDER}/{xls_file}")
+        t, ret, err_str = make_table(f"{INPUT_FOLDER}/{xls_file}")
         if ret != 0:
             GD_CNT += 1
             log(FAILED, f"[{GD_CNT:02d}] {xls_file}")
-            raise RuntimeError(errstr)
-        else:
+            raise RuntimeError(err_str)
             write_to_gd_script(t, output_gd_path, xls_file)
 
 
