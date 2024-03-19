@@ -1,3 +1,5 @@
+"""This is a GUI of xls2gd, which is a tool to convert Excel files to GDScript files."""
+
 #! /usr/bin/env python
 # -*- coding: utf-8 -*
 # description: xls2gd GUI
@@ -5,23 +7,25 @@
 # @author Yuancheng Zhang, https://github.com/endaye
 # @see repo: https://github.com/hidden-moss/xls2gd
 
+import sys
+import os
 import wx
 import wx.richtext as rt
 import wx.lib.agw.hyperlink as hl
 import tool_xls2gd as x2l
-import sys
-import os
+
 
 __authors__ = ["Yuancheng Zhang"]
 __copyright__ = "Copyright 2024, Hidden Moss"
 __credits__ = ["Yuancheng Zhang"]
 __license__ = "MIT"
-__version__ = "v1.1.0"
+__version__ = "v1.2.0"
 __maintainer__ = "Yuancheng Zhang"
 __status__ = "Production"
 
 
 class MainFrame(wx.Frame):
+    """Main frame of the GUI."""
     prefix_color = {
         "info": "blue",
         "error": "red",
@@ -36,11 +40,10 @@ class MainFrame(wx.Frame):
 
         self.sizer_v = wx.BoxSizer(wx.VERTICAL)
 
-        font1 = wx.Font(8, wx.MODERN, wx.NORMAL, wx.NORMAL, False, u"Consolas")
+        font1 = wx.Font(8, wx.MODERN, wx.NORMAL, wx.NORMAL, False, "Consolas")
 
         # 采用多行显示
-        self.logs = rt.RichTextCtrl(
-            self.panel, style=wx.TE_MULTILINE | wx.TE_READONLY)
+        self.logs = rt.RichTextCtrl(self.panel, style=wx.TE_MULTILINE | wx.TE_READONLY)
         self.logs.SetFont(font1)
 
         # 1为响应容器改变大小，expand占据窗口的整个宽度
@@ -49,28 +52,38 @@ class MainFrame(wx.Frame):
 
         # Config - input path
         self.sizer_cfg_1 = wx.BoxSizer(wx.HORIZONTAL)
-        self.st1 = wx.StaticText(
-            self.panel, label=" Input Path:", size=(120, -1))
+        self.st1 = wx.StaticText(self.panel, label=" Input Path:", size=(130, -1))
         self.sizer_cfg_1.Add(self.st1, flag=wx.RIGHT, border=4)
         self.tc1 = wx.TextCtrl(self.panel)
         self.sizer_cfg_1.Add(self.tc1, proportion=1)
 
-        # Config - output path
+        # Config - output gdscript path
         self.sizer_cfg_2 = wx.BoxSizer(wx.HORIZONTAL)
-        self.st2 = wx.StaticText(
-            self.panel, label=" Output Path:", size=(120, -1))
+        self.st2 = wx.StaticText(self.panel, label=" Output Path (*.gd):", size=(130, -1))
         self.sizer_cfg_2.Add(self.st2, flag=wx.RIGHT, border=4)
         self.tc2 = wx.TextCtrl(self.panel)
         self.sizer_cfg_2.Add(self.tc2, proportion=1)
 
-        # Config - output name template
+        # Config - output gdscript name template
         self.sizer_cfg_3 = wx.BoxSizer(wx.HORIZONTAL)
-        self.st3 = wx.StaticText(
-            self.panel, label=" Name Template:", size=(120, -1)
-        )
+        self.st3 = wx.StaticText(self.panel, label=" Name Template (*.gd):", size=(130, -1))
         self.sizer_cfg_3.Add(self.st3, flag=wx.RIGHT, border=4)
         self.tc3 = wx.TextCtrl(self.panel)
         self.sizer_cfg_3.Add(self.tc3, proportion=1)
+        
+        # Config - output gdscript name template
+        self.sizer_cfg_4 = wx.BoxSizer(wx.HORIZONTAL)
+        self.st4 = wx.StaticText(self.panel, label=" Output Path (*.csv):", size=(130, -1))
+        self.sizer_cfg_4.Add(self.st4, flag=wx.RIGHT, border=4)
+        self.tc4 = wx.TextCtrl(self.panel)
+        self.sizer_cfg_4.Add(self.tc4, proportion=1)
+        
+        # Config - output gdscript name template
+        self.sizer_cfg_5 = wx.BoxSizer(wx.HORIZONTAL)
+        self.st5 = wx.StaticText(self.panel, label=" Name Template (*.csv):", size=(130, -1))
+        self.sizer_cfg_5.Add(self.st5, flag=wx.RIGHT, border=4)
+        self.tc5 = wx.TextCtrl(self.panel)
+        self.sizer_cfg_5.Add(self.tc5, proportion=1)
 
         # add Config to parent panel
         self.sizer_v.Add(
@@ -81,6 +94,12 @@ class MainFrame(wx.Frame):
         )
         self.sizer_v.Add(
             self.sizer_cfg_3, flag=wx.EXPAND | wx.LEFT | wx.RIGHT | wx.TOP, border=4
+        )
+        self.sizer_v.Add(
+            self.sizer_cfg_4, flag=wx.EXPAND | wx.LEFT | wx.RIGHT | wx.TOP, border=4
+        )
+        self.sizer_v.Add(
+            self.sizer_cfg_5, flag=wx.EXPAND | wx.LEFT | wx.RIGHT | wx.TOP, border=4
         )
 
         # Bottom sizer
@@ -96,7 +115,7 @@ class MainFrame(wx.Frame):
         self.sizer_btm_l.Add(self.btn_convert, flag=wx.LEFT, border=4)
 
         # Version
-        version_str = __version__ + ' '
+        version_str = __version__ + " "
         self.st_version = wx.StaticText(
             self.panel, label=version_str, size=(100, -1), style=wx.ALIGN_RIGHT
         )
@@ -110,12 +129,17 @@ class MainFrame(wx.Frame):
         # Copyright
         copyright_link_str = "©2024 Hiden Moss"
         self.st_copyright_link = hl.HyperLinkCtrl(
-            self.panel, label=copyright_link_str, URL="http://www.hiddenmoss.com/", size=(100, -1), style=wx.ALIGN_RIGHT
+            self.panel,
+            label=copyright_link_str,
+            URL="http://www.hiddenmoss.com/",
+            size=(100, -1),
+            style=wx.ALIGN_RIGHT,
         )
 
         self.st_copyright_link.EnableRollover(True)
         self.st_copyright_link.SetToolTip(
-            wx.ToolTip("©2021 Copyright Hidden Moss Inc."))
+            wx.ToolTip("©2021 Copyright Hidden Moss Inc.")
+        )
         self.st_copyright_link.UpdateLink()
 
         # Bottom
@@ -127,8 +151,7 @@ class MainFrame(wx.Frame):
         )
 
         self.sizer_v.Add((-1, 4))
-        self.sizer_v.Add(self.sizer_btm, proportion=0,
-                         flag=wx.EXPAND, border=4)
+        self.sizer_v.Add(self.sizer_btm, proportion=0, flag=wx.EXPAND, border=4)
         self.sizer_btm.Add(
             self.sizer_btm_l, proportion=1, flag=wx.LEFT | wx.EXPAND, border=4
         )
@@ -145,9 +168,12 @@ class MainFrame(wx.Frame):
         self.sizer_v.Hide(self.sizer_cfg_1, recursive=True)
         self.sizer_v.Hide(self.sizer_cfg_2, recursive=True)
         self.sizer_v.Hide(self.sizer_cfg_3, recursive=True)
+        self.sizer_v.Hide(self.sizer_cfg_4, recursive=True)
+        self.sizer_v.Hide(self.sizer_cfg_5, recursive=True)
 
     # 响应button事件
     def on_convert_click(self, event):
+        """Convert button clicked."""
         if self.cb_config.IsChecked():
             self.hide_config()
 
@@ -157,61 +183,81 @@ class MainFrame(wx.Frame):
         self.btn_convert.Enable()
 
     def clear_log(self):
+        """Clear the log."""
         self.logs.Clear()
         self.logs.Refresh()
 
     def save_config(self):
+        """Save the config file."""
         # print('save_config')
         x2l.INPUT_FOLDER = self.tc1.GetValue()
-        x2l.OUTPUT_FOLDER = self.tc2.GetValue()
-        x2l.OUTPUT_NAME_TEMPLATE = self.tc3.GetValue()
+        x2l.OUTPUT_GD_FOLDER = self.tc2.GetValue()
+        x2l.OUTPUT_GD_NAME_TEMPLATE = self.tc3.GetValue()
+        x2l.OUTPUT_CSV_FOLDER = self.tc4.GetValue()
+        x2l.OUTPUT_CSV_NAME_TEMPLATE = self.tc5.GetValue()
         x2l.save_config()
 
     def load_config(self):
+        """Load the config file."""
         # print('load_config')
         x2l.load_config()
         self.tc1.Clear()
         self.tc2.Clear()
         self.tc3.Clear()
+        self.tc4.Clear()
+        self.tc5.Clear()
         self.tc1.Refresh()
         self.tc2.Refresh()
         self.tc3.Refresh()
+        self.tc4.Refresh()
+        self.tc5.Refresh()
         self.tc1.write(x2l.INPUT_FOLDER)
-        self.tc2.write(x2l.OUTPUT_FOLDER)
-        self.tc3.write(x2l.OUTPUT_NAME_TEMPLATE)
+        self.tc2.write(x2l.OUTPUT_GD_FOLDER)
+        self.tc3.write(x2l.OUTPUT_GD_NAME_TEMPLATE)
+        self.tc4.write(x2l.OUTPUT_CSV_FOLDER)
+        self.tc5.write(x2l.OUTPUT_CSV_NAME_TEMPLATE)
 
     def on_config_checked(self, event):
+        """Config checkbox checked."""
         self.toggle_config()
 
     def toggle_config(self):
+        """Toggle the config."""
         if self.cb_config.IsChecked():
             self.show_config()
         else:
             self.hide_config()
 
     def show_config(self):
+        """Show the config."""
         self.load_config()
         self.sizer_v.Show(self.sizer_cfg_1, recursive=True)
         self.sizer_v.Show(self.sizer_cfg_2, recursive=True)
         self.sizer_v.Show(self.sizer_cfg_3, recursive=True)
+        self.sizer_v.Show(self.sizer_cfg_4, recursive=True)
+        self.sizer_v.Show(self.sizer_cfg_5, recursive=True)
         self.panel.Layout()
         self.cb_config.SetValue(True)
 
     def hide_config(self):
+        """Hide the config."""
         self.save_config()
         self.sizer_v.Hide(self.sizer_cfg_1, recursive=True)
         self.sizer_v.Hide(self.sizer_cfg_2, recursive=True)
         self.sizer_v.Hide(self.sizer_cfg_3, recursive=True)
+        self.sizer_v.Hide(self.sizer_cfg_4, recursive=True)
+        self.sizer_v.Hide(self.sizer_cfg_5, recursive=True)
         self.panel.Layout()
         self.cb_config.SetValue(False)
 
     def write(self, prefix, s):
+        """Write log."""
         self.logs.WriteText("[")
         self.logs.BeginTextColour(self.prefix_color[prefix])
         self.logs.WriteText(prefix)
         self.logs.EndTextColour()
         self.logs.WriteText("]")
-        self.logs.WriteText(" {}\n".format(s))
+        self.logs.WriteText(f" {s}\n")
 
     def resource_path(self, relative_path):
         """Get absolute path to resource, works for dev and for PyInstaller"""
@@ -224,9 +270,10 @@ class MainFrame(wx.Frame):
 
 
 class App(wx.App):
+    """App class."""
     def OnInit(self):
-        self.main_frame = MainFrame(
-            None, "Excel to GDScript Convertor")
+        """Init the app."""
+        self.main_frame = MainFrame(None, "Excel to GDScript Convertor")
         self.main_frame.Show()
         if x2l:
             x2l.set_gui(self.main_frame)
@@ -234,6 +281,7 @@ class App(wx.App):
 
 
 def main():
+    """Main function."""
     app = App()
     app.MainLoop()
 

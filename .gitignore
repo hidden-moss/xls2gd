@@ -134,4 +134,7 @@ dmypy.json
 # xls2gd
 /xls
 /gd
+/csv
+/locale
+/data
 xls2gd.exe
