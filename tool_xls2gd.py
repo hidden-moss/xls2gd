@@ -507,7 +507,7 @@ def write_to_gd_script(excel, output_gd_path, output_csv_path, xls_file):
         suffix = ""
         outfp = codecs.open(output_gd_path + "/" + gd_file_name, "w", "utf-8")
         outfp.write(SCRIPT_HEAD % (excel["filename"].replace(".//", "")))
-        outfp.write("var " + sheet_name + suffix + " = {\r\n")
+        outfp.write("const " + sheet_name + suffix + " = {\r\n")
 
         if key1 and key2 and key3:
             write_to_gd_key(sheet, [key1, key2, key3], type_dict, outfp, 1)
