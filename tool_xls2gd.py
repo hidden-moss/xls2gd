@@ -51,7 +51,7 @@ SCRIPT_HEAD = """# @copyright Hidden Moss
 
 # data type
 INT, FLOAT, STRING, BOOL = r"int", r"float", r"string", r"bool"
-INT_ARR, FLOAT_ARR, STRING_ARR, BOOL_ARR = r"int[]", r"float[]", r"string[]", r"bool[]"
+INT_ARR, FLOAT_ARR, STRING_ARR, BOOL_ARR = r"int[]", r"float[]", r"g", r"bool[]"
 VECTOR2, VECTOR3, COLOR = "vector2", "vector3", "color"
 GDSCRIPT, COMMENT = "gdscript", "comment"
 TRANSLATE = "translate"
@@ -344,7 +344,7 @@ def get_string(v):
     """Get string."""
     if v is None:
         return "null"
-    return '"' + v + '"'
+    return '&"' + v + '"'
 
 
 def get_bool(v):
@@ -399,7 +399,7 @@ def get_string_arr(v):
         if val is not None and val != "":
             if i != 0:
                 res_str += ", "
-            res_str = res_str + '"' + val + '"'
+            res_str = res_str + '&"' + val + '"'
             i += 1
     res_str += "]"
     return res_str
