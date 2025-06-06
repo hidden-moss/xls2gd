@@ -19,7 +19,7 @@ import csv
 import xlrd
 
 __authors__ = ["Yuancheng Zhang"]
-__copyright__ = "Copyright 2024, Hidden Moss"
+__copyright__ = "Copyright 2025, Hidden Moss"
 __credits__ = ["Yuancheng Zhang"]
 __license__ = "MIT"
 __version__ = "v1.2.4"

@@ -16,10 +16,10 @@ import tool_xls2gd as x2l
 
 
 __authors__ = ["Yuancheng Zhang"]
-__copyright__ = "Copyright 2024, Hidden Moss"
+__copyright__ = "©2025 Hidden Moss"
 __credits__ = ["Yuancheng Zhang"]
 __license__ = "MIT"
-__version__ = "v1.2.3"
+__version__ = "v1.2.4"
 __maintainer__ = "Yuancheng Zhang"
 __status__ = "Production"
 
@@ -127,18 +127,18 @@ class MainFrame(wx.Frame):
         self.sizer_btm_r_h.Add(self.cb_config, flag=wx.RIGHT, border=4)
 
         # Copyright
-        copyright_link_str = "©2024 Hiden Moss"
+        copyright_link_str = __copyright__
         self.st_copyright_link = hl.HyperLinkCtrl(
             self.panel,
             label=copyright_link_str,
             URL="http://www.hiddenmoss.com/",
-            size=(100, -1),
+            size=(240, -1),
             style=wx.ALIGN_RIGHT,
         )
 
         self.st_copyright_link.EnableRollover(True)
         self.st_copyright_link.SetToolTip(
-            wx.ToolTip("©2021 Copyright Hidden Moss Inc.")
+            wx.ToolTip(__copyright__)
         )
         self.st_copyright_link.UpdateLink()
 
