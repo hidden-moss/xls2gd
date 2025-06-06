@@ -22,7 +22,7 @@ __authors__ = ["Yuancheng Zhang"]
 __copyright__ = "Copyright 2024, Hidden Moss"
 __credits__ = ["Yuancheng Zhang"]
 __license__ = "MIT"
-__version__ = "v1.2.3"
+__version__ = "v1.2.4"
 __maintainer__ = "Yuancheng Zhang"
 __status__ = "Development"
 
@@ -51,7 +51,7 @@ SCRIPT_HEAD = """# @copyright Hidden Moss
 
 # data type
 INT, FLOAT, STRING, BOOL = r"int", r"float", r"string", r"bool"
-INT_ARR, FLOAT_ARR, STRING_ARR, BOOL_ARR = r"int[]", r"float[]", r"g", r"bool[]"
+INT_ARR, FLOAT_ARR, STRING_ARR, BOOL_ARR = r"int[]", r"float[]", r"string[]", r"bool[]"
 VECTOR2, VECTOR3, COLOR = "vector2", "vector3", "color"
 GDSCRIPT, COMMENT = "gdscript", "comment"
 TRANSLATE = "translate"
@@ -344,7 +344,7 @@ def get_string(v):
     """Get string."""
     if v is None:
         return "null"
-    return '&"' + v + '"'
+    return '&"' + v.strip() + '"'
 
 
 def get_bool(v):
@@ -399,7 +399,7 @@ def get_string_arr(v):
         if val is not None and val != "":
             if i != 0:
                 res_str += ", "
-            res_str = res_str + '&"' + val + '"'
+            res_str = res_str + '&"' + val.strip() + '"'
             i += 1
     res_str += "]"
     return res_str
